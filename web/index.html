@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="pl">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -65,7 +65,7 @@
 <body>
 <header>
   <h1>Raptor <span>Web</span></h1>
-  <small>Call of the Shadows · port źródłowy skynettx/raptor → WebAssembly</small>
+  <small>Call of the Shadows · source port skynettx/raptor → WebAssembly</small>
 </header>
 <main>
   <div id="stage">
@@ -73,29 +73,29 @@
     <canvas id="canvas" tabindex="-1" oncontextmenu="event.preventDefault()"></canvas>
     <div id="overlay">
       <h2>RAPTOR</h2>
-      <p>Gra potrzebuje Twoich oryginalnych plików danych (wersja 1.2+).
-         Wybierz je raz — zostaną zapamiętane w przeglądarce.</p>
+      <p>The game needs your original data files (version 1.2+).
+         Select them once — they will be remembered in this browser.</p>
       <div id="files"></div>
-      <label class="btn" for="picker">Wybierz pliki GLB…</label>
+      <label class="btn" for="picker">Choose GLB files…</label>
       <input id="picker" type="file" multiple accept=".glb,.GLB">
-      <select id="lang" aria-label="Język / Language"></select>
-      <select id="fps" aria-label="Klatki na sekundę">
+      <select id="lang" aria-label="Language"></select>
+      <select id="fps" aria-label="Frames per second">
         <option value="60">60 FPS</option>
         <option value="120">120 FPS</option>
         <option value="144">144 FPS</option>
-        <option value="0">Jak monitor</option>
+        <option value="0">Match monitor</option>
       </select>
-      <button id="start" disabled>Uruchom grę</button>
+      <button id="start" disabled>Start game</button>
     </div>
   </div>
   <div id="controls">
-    <button id="fullscreen" type="button">Pełny ekran</button>
-    <span id="status">Ładowanie silnika…</span>
+    <button id="fullscreen" type="button">Fullscreen</button>
+    <span id="status">Loading engine…</span>
   </div>
 </main>
 <footer>
-  Sterowanie: strzałki · <kbd>Ctrl</kbd> strzał · <kbd>Alt</kbd> broń specjalna ·
-  <kbd>Spacja</kbd> zmiana broni · <kbd>Alt</kbd>+<kbd>Enter</kbd> pełny ekran
+  Controls: arrows · <kbd>Ctrl</kbd> fire · <kbd>Alt</kbd> special weapon ·
+  <kbd>Space</kbd> change weapon · <kbd>Alt</kbd>+<kbd>Enter</kbd> fullscreen
 </footer>
 
 <script>
@@ -112,8 +112,8 @@
     const available = Object.keys(LANGS).filter((c) => c === "en" || FS.analyzePath(`/lang/${c}.lng`).exists);
     let saved = null;
     try { saved = localStorage.getItem("raptor-lang"); } catch { /* private mode */ }
-    const browser = (navigator.language || "en").slice(0, 2);
-    const chosen = [saved, browser, "en"].find((c) => available.includes(c));
+    // English by default; the browser language is not used
+    const chosen = [saved, "en"].find((c) => available.includes(c));
     $("lang").innerHTML = available.map((c) => `<option value="${c}">${LANGS[c]}</option>`).join("");
     $("lang").value = chosen;
     $("lang").addEventListener("change", () => {
@@ -133,7 +133,7 @@
     $("files").innerHTML = NAMES.map((n) => `<span class="${has(n) ? "ok" : ""}">${n}</span>`).join("");
     const ok = has("FILE0000.GLB") && has("FILE0001.GLB");
     $("start").disabled = !ok;
-    status(ok ? "Pliki gotowe. Kliknij „Uruchom grę”." : "Brak FILE0000.GLB i FILE0001.GLB.");
+    status(ok ? "Files ready. Click “Start game”." : "FILE0000.GLB and FILE0001.GLB are missing.");
   }
 
   async function writeFile(name, buffer) {
@@ -205,7 +205,7 @@
   $("start").addEventListener("click", async () => {
     $("overlay").classList.add("hidden");
     gameCanvas.focus();
-    status("Gra działa. Zapisy i ustawienia są trzymane w przeglądarce.");
+    status("Game running. Saves and settings are kept in this browser.");
     setInterval(persist, 5000);       // zapisy gry i SETUP.INI -> IndexedDB
     running = true;
     Module.callMain(["-lang", $("lang").value, "-fps", $("fps").value]);
@@ -229,9 +229,9 @@
       await persist();
       refreshFiles();
     },
-    onAbort: (what) => status(`Błąd: ${what}`, true),
+    onAbort: (what) => status(`Error: ${what}`, true),
   };
-  window.addEventListener("error", (e) => status(`Błąd: ${e.message}`, true));
+  window.addEventListener("error", (e) => status(`Error: ${e.message}`, true));
 </script>
 <script src="raptor.js"></script>
 </body>

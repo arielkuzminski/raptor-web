@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="300" viewBox="0 0 900 300" role="img" aria-label="Raptor Web">
-  <rect width="900" height="300" rx="16" fill="#07090d"/>
-  <rect x="24" y="24" width="852" height="252" rx="10" fill="none" stroke="#232a36" stroke-width="2"/>
-  <text x="450" y="150" text-anchor="middle" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="96" font-weight="700" letter-spacing="10" fill="#d8dee9">RAPTOR <tspan fill="#f2a541">WEB</tspan></text>
-  <line x1="300" y1="186" x2="600" y2="186" stroke="#f2a541" stroke-width="3"/>
-  <text x="450" y="226" text-anchor="middle" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="24" letter-spacing="4" fill="#7d8899">CALL OF THE SHADOWS · IN YOUR BROWSER</text>
-</svg>

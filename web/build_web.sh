@@ -6,7 +6,10 @@ set -euo pipefail
 SRC="$(cd "$(dirname "$0")/.." && pwd)"
 OUT="$SRC/web/dist"
 OBJ="$HOME/raptor-build/obj"          # obiekty na dysku Linuksa - szybciej niż /mnt/r
-source "$HOME/tools/emsdk/emsdk_env.sh" >/dev/null 2>&1
+# Lokalnie: emsdk w ~/tools/emsdk. W CI (setup-emsdk) emcc jest już w PATH.
+if ! command -v emcc >/dev/null 2>&1; then
+    source "$HOME/tools/emsdk/emsdk_env.sh" >/dev/null 2>&1
+fi
 
 mkdir -p "$OUT" "$OBJ"
 

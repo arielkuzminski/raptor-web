@@ -1,5 +1,6 @@
 #include <string.h>
 #include "common.h"
+#include "interp.h"
 #include "anims.h"
 #include "gfxapi.h"
 #include "glbapi.h"
@@ -410,6 +411,7 @@ ANIMS_DisplayGround(
             continue;
         
         pic = (char*)GLB_GetItem(cur->item);
+        INTERP_Key(IK_ANIM, (intptr_t)cur);
         
         if (cur->lib->transparent)
             GFX_ShadeShape(LIGHT, pic, cur->dx, cur->dy);
@@ -435,6 +437,7 @@ ANIMS_DisplaySky(
             continue;
         
         pic = (char*)GLB_GetItem(cur->item);
+        INTERP_Key(IK_ANIM, (intptr_t)cur);
         
         if (cur->lib->transparent)
             GFX_ShadeShape(LIGHT, pic, cur->dx, cur->dy);
@@ -461,6 +464,7 @@ ANIMS_DisplayHigh(
             continue;
         
         pic = (char*)GLB_GetItem(cur->item);
+        INTERP_Key(IK_ANIM, (intptr_t)cur);
         
         if (cur->lib->transparent)
             GFX_ShadeShape(LIGHT, pic, cur->dx, cur->dy);

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "common.h"
+#include "interp.h"
 #include "enemy.h"
 #include "gfxapi.h"
 #include "rap.h"
@@ -1182,6 +1183,7 @@ ENEMY_DisplayGround(
     {
         if (!spt->groundflag)
             continue;
+        INTERP_Key(IK_ENEMY, (intptr_t)spt);
         GFX_PutSprite((char*)GLB_GetItem(spt->item), spt->x, spt->y);
     }
 }
@@ -1202,6 +1204,7 @@ ENEMY_DisplaySky(
         if (spt->groundflag)
             continue;
         
+        INTERP_Key(IK_ENEMY, (intptr_t)spt);
         GFX_PutSprite((char*)GLB_GetItem(spt->item), spt->x, spt->y);
         
         for (i = 0; i < LE_LONG(spt->lib->numengs); i++)

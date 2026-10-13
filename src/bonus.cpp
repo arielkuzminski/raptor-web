@@ -8,6 +8,7 @@
 #include "fx.h"
 #include "fileids.h"
 #include "entypes.h"
+#include "interp.h"
 
 BONUS bons[MAX_BONUS];
 BONUS first_bonus, last_bonus;
@@ -267,6 +268,7 @@ BONUS_Display(
     
     for (cur = first_bonus.next; &last_bonus != cur; cur = cur->next)
     {
+        INTERP_Key(IK_BONUS, (intptr_t)cur);
         if (!cur->dflag)
         {
             GFX_PutSprite((char*)GLB_GetItem(cur->item), cur->bx, cur->by);

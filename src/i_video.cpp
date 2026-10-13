@@ -75,6 +75,18 @@ static SDL_Rect blit_rect = {
 
 static uint32_t pixel_format;
 
+// Smooth frames ( interp.cpp ): playfield columns shifted down by a fraction
+// of a pixel, and a HUD layer drawn over it unshifted.
+
+static int playfield_x = 0;
+static int playfield_w = SCREENWIDTH;
+static double playfield_shift = 0;
+static const char *overlay_pixels = NULL;
+static const char *overlay_mask = NULL;
+static SDL_Texture *overlay_texture = NULL;
+static SDL_Renderer *overlay_renderer = NULL;
+static int vsync_paced = 0;
+
 // palette
 
 static SDL_Color palette[256];
@@ -437,6 +449,139 @@ void I_BrowserYield(int force)
 #else
     (void)force;
 #endif
+}
+
+//
+// Smooth frames ( interp.cpp )
+//
+
+void I_SetPlayfield(int x, int width, double shift)
+{
+    playfield_x = x;
+    playfield_w = width;
+    playfield_shift = shift;
+}
+
+void I_SetOverlay(const char *pixels, const char *mask)
+{
+    overlay_pixels = pixels;
+    overlay_mask = mask;
+}
+
+void I_SetVSyncPaced(int on)
+{
+    vsync_paced = on;
+}
+
+double I_NowMs(void)
+{
+#ifdef __EMSCRIPTEN__
+    return emscripten_get_now();
+#else
+    return SDL_GetPerformanceCounter() * 1000.0 / SDL_GetPerformanceFrequency();
+#endif
+}
+
+#ifdef __EMSCRIPTEN__
+EM_ASYNC_JS(void, wait_animation_frame, (), {
+    await new Promise((resolve) => requestAnimationFrame(() => resolve()));
+});
+#endif
+
+// Waits for the next screen refresh ( 60 / 120 / 144 Hz ... )
+void I_WaitVSync(void)
+{
+#ifdef __EMSCRIPTEN__
+    wait_animation_frame();
+#else
+    SDL_Delay(1);
+#endif
+}
+
+// Size of the area the frame is rendered to ( logical size or window )
+static void RenderSpace(int *w, int *h)
+{
+    SDL_RenderGetLogicalSize(renderer, w, h);
+
+    if (*w == 0 || *h == 0)
+        SDL_GetRendererOutputSize(renderer, w, h);
+}
+
+// Copies the playfield columns again, moved down by a fraction of a pixel
+static void DrawShiftedPlayfield(void)
+{
+    int w, h, tw, th;
+    double sx, sy;
+    SDL_Rect src, clip;
+    SDL_FRect dst;
+
+    RenderSpace(&w, &h);
+    SDL_QueryTexture(texture_upscaled, NULL, NULL, &tw, &th);
+
+    sx = (double)w / SCREENWIDTH;
+    sy = (double)h / SCREENHEIGHT;
+
+    src.x = playfield_x * tw / SCREENWIDTH;
+    src.y = 0;
+    src.w = playfield_w * tw / SCREENWIDTH;
+    src.h = th;
+
+    dst.x = (float)(playfield_x * sx);
+    dst.y = (float)(playfield_shift * sy);
+    dst.w = (float)(playfield_w * sx);
+    dst.h = (float)h;
+
+    clip.x = (int)(playfield_x * sx + 0.5);
+    clip.y = 0;
+    clip.w = (int)(playfield_w * sx + 0.5);
+    clip.h = h;
+
+    SDL_RenderSetClipRect(renderer, &clip);
+    SDL_RenderCopyF(renderer, texture_upscaled, &src, &dst);
+    SDL_RenderSetClipRect(renderer, NULL);
+}
+
+// Draws the HUD layer ( 8-bit pixels + mask of drawn pixels ) on top
+static void DrawOverlay(void)
+{
+    void *pixels;
+    int pitch;
+
+    if (overlay_renderer != renderer || !overlay_texture)
+    {
+        overlay_texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
+                                            SDL_TEXTUREACCESS_STREAMING,
+                                            SCREENWIDTH, SCREENHEIGHT);
+        overlay_renderer = renderer;
+
+        if (!overlay_texture)
+            return;
+
+        SDL_SetTextureBlendMode(overlay_texture, SDL_BLENDMODE_BLEND);
+#if SDL_VERSION_ATLEAST(2, 0, 12)
+        SDL_SetTextureScaleMode(overlay_texture, SDL_ScaleModeNearest);
+#endif
+    }
+
+    if (SDL_LockTexture(overlay_texture, NULL, &pixels, &pitch) != 0)
+        return;
+
+    for (int y = 0; y < SCREENHEIGHT; y++)
+    {
+        uint32_t *row = (uint32_t*)((uint8_t*)pixels + y * pitch);
+        const uint8_t *src = (const uint8_t*)overlay_pixels + y * SCREENWIDTH;
+        const char *mask = overlay_mask + y * SCREENWIDTH;
+
+        for (int x = 0; x < SCREENWIDTH; x++)
+        {
+            const SDL_Color &c = palette[src[x]];
+
+            row[x] = mask[x] ? 0xFF000000u | (c.r << 16) | (c.g << 8) | c.b : 0;
+        }
+    }
+
+    SDL_UnlockTexture(overlay_texture);
+    SDL_RenderCopy(renderer, overlay_texture, NULL, NULL);
 }
 
 void I_GetEvent(void)
@@ -853,11 +998,18 @@ void I_FinishUpdate (void)
     SDL_SetRenderTarget(renderer, NULL);
     SDL_RenderCopy(renderer, texture_upscaled, NULL, NULL);
 
+    if (playfield_shift > 0)
+        DrawShiftedPlayfield();
+
+    if (overlay_pixels)
+        DrawOverlay();
+
     // Draw!
 
     SDL_RenderPresent(renderer);
 
-    I_BrowserYield(1);
+    if (!vsync_paced)
+        I_BrowserYield(1);
 
 #if 0
     // Restore background and undo the disk indicator, if it was drawn.

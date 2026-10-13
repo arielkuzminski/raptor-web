@@ -18,7 +18,7 @@ CFLAGS=(-O2 -sUSE_SDL=2
 GAME_SRC=(tile gssapi objects tile_a windows flame i_lastscr joyapi kbdapi glbapi
           i_video musapi movie_a ptrapi_a swdapi imsapi store i_oplmusic bonus anims
           shadow movie m_misc shots opl3 eshot gfxapi_a dspapi vmemapi rap demo prefapi
-          gfxapi intro help input fx ptrapi loadsave enemy mputsf lang)
+          gfxapi intro help input fx ptrapi loadsave enemy mputsf lang interp)
 TXT_SRC=(txt_conditional txt_checkbox txt_desktop txt_dropdown txt_fileselect txt_gui
          txt_inputbox txt_io txt_button txt_label txt_radiobutton txt_scrollpane
          txt_separator txt_spinctrl txt_sdl txt_strut txt_table txt_utf8 txt_widget

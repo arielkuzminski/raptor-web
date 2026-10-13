@@ -69,6 +69,12 @@
       <label class="btn" for="picker">Wybierz pliki GLB…</label>
       <input id="picker" type="file" multiple accept=".glb,.GLB">
       <select id="lang" aria-label="Język / Language"></select>
+      <select id="fps" aria-label="Klatki na sekundę">
+        <option value="60">60 FPS</option>
+        <option value="120">120 FPS</option>
+        <option value="144">144 FPS</option>
+        <option value="0">Jak monitor</option>
+      </select>
       <button id="start" disabled>Uruchom grę</button>
     </div>
   </div>
@@ -99,6 +105,11 @@
     $("lang").value = chosen;
     $("lang").addEventListener("change", () => {
       try { localStorage.setItem("raptor-lang", $("lang").value); } catch { /* private mode */ }
+    });
+
+    try { $("fps").value = localStorage.getItem("raptor-fps") || "60"; } catch { /* private mode */ }
+    $("fps").addEventListener("change", () => {
+      try { localStorage.setItem("raptor-fps", $("fps").value); } catch { /* private mode */ }
     });
   }
 
@@ -140,7 +151,7 @@
     $("canvas").focus();
     status("Gra działa. Zapisy i ustawienia są trzymane w przeglądarce.");
     setInterval(persist, 5000);       // zapisy gry i SETUP.INI -> IndexedDB
-    Module.callMain(["-lang", $("lang").value]);
+    Module.callMain(["-lang", $("lang").value, "-fps", $("fps").value]);
   });
 
   var Module = {

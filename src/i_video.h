@@ -52,3 +52,10 @@ void I_SetGrabMouseCallback(grabmouse_callback_t func);
 void VIDEO_LoadPrefs(void);
 void closewindow(void);
 bool I_GetNeedResize(bool setonlypos);
+
+// Smooth frames ( interp.cpp )
+void I_SetPlayfield(int x, int width, double shift);
+void I_SetOverlay(const char *pixels, const char *mask);
+void I_SetVSyncPaced(int on);
+void I_WaitVSync(void);
+double I_NowMs(void);

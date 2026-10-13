@@ -6,6 +6,7 @@
 #include "i_video.h"
 #include "entypes.h"
 #include "lang.h"
+#include "interp.h"
 
 char *displaybuffer;
 char *displayscreen;
@@ -681,6 +682,12 @@ GFX_ShadeShape(
     int y                  // INPUT : y position
 )
 {
+    if (interp_recording)
+    {
+        INTERP_Op(IOP_SHADESHAPE, inmem, x, y, opt, 0, 0);
+        return;
+    }
+
     GFX_PIC* h = (GFX_PIC*)inmem;
     GFX_SPRITE* ah;
     char rval;
@@ -890,7 +897,12 @@ GFX_ColorBox(
     int color              // INPUT : fill color ( 0 - 255 )
 )
 {
-    
+    if (interp_recording)
+    {
+        INTERP_Op(IOP_COLORBOX, NULL, x, y, lx, ly, color);
+        return;
+    }
+
     char *outbuf;
     
     if (lx < 1 || ly < 1)
@@ -971,6 +983,12 @@ GFX_VLine(
 {
     char *outbuf;
     int lx = 1;
+
+    if (interp_recording)
+    {
+        INTERP_Op(IOP_VLINE, NULL, x, y, ly, color, 0);
+        return;
+    }
     
     if (ly < 1)
         return;
@@ -1012,6 +1030,12 @@ GFX_Line(
     int color              // INPUT : color ( 0 - 255 )
 )
 {
+    if (interp_recording)
+    {
+        INTERP_Op(IOP_LINE, NULL, x, y, x2, y2, color);
+        return;
+    }
+
     int addx = 1;
     int addy = 1;
     int dely = y2 - y;
@@ -1416,6 +1440,12 @@ GFX_PutSprite(
     int y                  // INPUT : y pos
 )
 {
+    if (interp_recording)
+    {
+        INTERP_Op(IOP_SPRITE, inmem, x, y, 0, 0, 0);
+        return;
+    }
+
     GFX_PIC *h = (GFX_PIC*)inmem;
     GFX_SPRITE *ah;
     char rval;

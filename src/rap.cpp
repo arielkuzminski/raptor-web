@@ -34,6 +34,9 @@
 #include "fileids.h"
 #include "entypes.h"
 #include "lang.h"
+#include "interp.h"
+
+#define TICK_MS (3 * 1000.0 / 70)    // one game tick = 3 frames of the 70 Hz timer
 
 #ifdef BUILD_WITH_SETUP
 #include "setup/se_main.h"
@@ -815,6 +818,7 @@ Do_Game(
 )
 {
     int b2_flag, b3_flag, init_flag, rval, start_score, local_cnt;
+    double tick_start;
     b2_flag = 0;
     b3_flag = 0;
     init_flag = 1;
@@ -858,6 +862,8 @@ Do_Game(
     memset(displayscreen, 0, 64000);
     
     local_cnt = GFX_GetFrameCount();
+    tick_start = I_NowMs();
+    INTERP_Reset();
     
     g_flash = 0;
     g_oldsuper = -1;
@@ -1062,6 +1068,9 @@ Do_Game(
         if (draw_player)
             SHADOW_Add(curship[playerpic + g_flash], playerx, playery);
         
+        // drawing of this tick is recorded and shown smoothly below ( interp.cpp )
+        INTERP_BeginTick();
+        
         TILE_Display();
         SHADOW_DisplayGround();
         ENEMY_DisplayGround();
@@ -1075,6 +1084,7 @@ Do_Game(
         
         if (draw_player)
         {
+            INTERP_Key(IK_PLAYER, 0);
             FLAME_Down(player_cx - o_engine[playerpic] - 3, player_cy + 15, 4, gl_cnt % 2);
             FLAME_Down(player_cx + o_engine[playerpic] - 2, player_cy + 15, 4, gl_cnt % 2);
             GFX_PutSprite((char*)GLB_GetItem(curship[playerpic + g_flash]), playerx, playery);
@@ -1111,18 +1121,36 @@ Do_Game(
                 RAP_PaletteStuff();
         }
         
+        INTERP_Overlay(1);
         RAP_DisplayStats();
+        INTERP_Overlay(0);
+        INTERP_EndTick();
         
-        while (GFX_GetFrameCount() - local_cnt < 3)
+        if (INTERP_Enabled())
         {
+            // frames at the screen's refresh rate until the next tick is due
+            do
+            {
+                INTERP_Render((I_NowMs() - tick_start) / TICK_MS, fadeflag);
+                I_WaitVSync();
+            } while (GFX_GetFrameCount() - local_cnt < 3);
+            
+            local_cnt = GFX_GetFrameCount();
+            tick_start = I_NowMs();
         }
-        
-        local_cnt = GFX_GetFrameCount();
-        
-        if (fadeflag)
-            TILE_ShakeScreen();
         else
-            TILE_DisplayScreen();
+        {
+            while (GFX_GetFrameCount() - local_cnt < 3)
+            {
+            }
+            
+            local_cnt = GFX_GetFrameCount();
+            
+            if (fadeflag)
+                TILE_ShakeScreen();
+            else
+                TILE_DisplayScreen();
+        }
         
         if (startfadeflag)
         {
@@ -1437,6 +1465,10 @@ main(
     {
         if (!strcmp(argv[loop], "-lang"))
             INI_PutPreference("Setup", "Language", argv[loop + 1]);
+
+        // frame limit for smooth frames, 0 = screen refresh rate
+        if (!strcmp(argv[loop], "-fps"))
+            INI_PutPreferenceLong("Video", "max_fps", atoi(argv[loop + 1]));
     }
     {
         char langbuf[16];
@@ -1450,6 +1482,8 @@ main(
     
     VIDEO_LoadPrefs();
     IPT_LoadPrefs();
+    INTERP_Init(INI_GetPreferenceLong("Video", "interp", 1),
+                INI_GetPreferenceLong("Video", "max_fps", 60));
     
     switch (control)
     {

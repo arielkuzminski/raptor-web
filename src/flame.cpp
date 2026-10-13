@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include "common.h"
+#include "interp.h"
 #include "flame.h"
 #include "rap.h"
 #include "gfxapi.h"
@@ -58,6 +59,12 @@ FLAME_Up(
     int frame             // INPUT : frame
 )
 {
+    if (interp_recording)
+    {
+        INTERP_Op(IOP_FLAMEUP, NULL, ix, iy, width, frame, 0);
+        return;
+    }
+
     char *outbuf;
     int y, addx, loop, num;
     unsigned int curs;
@@ -111,6 +118,12 @@ FLAME_Down(
     int frame              // INPUT : frame
 )
 {
+    if (interp_recording)
+    {
+        INTERP_Op(IOP_FLAMEDOWN, NULL, ix, iy, width, frame, 0);
+        return;
+    }
+
     char *outbuf;
     int y, loop, addx;
     unsigned int curs;

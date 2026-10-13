@@ -1,5 +1,6 @@
 #include <string.h>
 #include "common.h"
+#include "interp.h"
 #include "eshot.h"
 #include "rap.h"
 #include "gfxapi.h"
@@ -517,6 +518,7 @@ ESHOT_Display(
     
     for (shot = first_eshot.next; shot !=&last_eshot; shot = shot->next)
     {
+        INTERP_Key(IK_ESHOT, (intptr_t)shot);
         if (shot->type == ES_LASER)
         {
             for (loop = shot->y; loop < shot->move.y2; loop += 3)

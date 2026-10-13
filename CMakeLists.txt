@@ -98,6 +98,7 @@ set(SOURCE_FILES
     src/loadsave.cpp                         src/loadsave.h
     src/enemy.cpp                            src/enemy.h
     src/lang.cpp                             src/lang.h
+    src/interp.cpp                           src/interp.h
     src/mpuwinmm.cpp
     src/mputsf.cpp
     src/mpualsa.cpp

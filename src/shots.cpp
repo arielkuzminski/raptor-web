@@ -1,5 +1,6 @@
 #include <string.h>
 #include "common.h"
+#include "interp.h"
 #include "shots.h"
 #include "glbapi.h"
 #include "fx.h"
@@ -1263,6 +1264,7 @@ SHOTS_Display(
     
     for (shot = first_shots.next; shot != &last_shots; shot = shot->next)
     {
+        INTERP_Key(IK_SHOT, (intptr_t)shot);
         switch (shot->lib->beam)
         {
         default:

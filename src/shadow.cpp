@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include "common.h"
+#include "interp.h"
 #include "gfxapi.h"
 #include "rap.h"
 #include "windows.h"
@@ -35,6 +36,12 @@ SHADOW_Draw(
     int y                  // INPUT : y position of sprite
 )
 {
+    if (interp_recording)
+    {
+        INTERP_Op(IOP_SHADOW, pic, x, y, 0, 0, 0);
+        return;
+    }
+
     GFX_PIC *h = (GFX_PIC*)pic;
     GFX_SPRITE *ah;
     int lx, ly, oldsy, sx, sy, ox, oy, x2, y2, oldy, drawflag;
@@ -203,6 +210,7 @@ SHADOW_DisplaySky(
     while (--num_shadows != -1)
     {
         pic = GLB_GetItem(cur->item);
+        INTERP_Key(IK_SHADOW, cur - shads);
         SHADOW_Draw(pic, cur->x, cur->y);
         cur++;
     }
@@ -228,6 +236,7 @@ SHADOW_DisplayGround(
     while (--num_gshadows != -1)
     {
         pic = GLB_GetItem(cur->item);
+        INTERP_Key(IK_GSHADOW, cur - gshads);
         GFX_ShadeShape(DARK, (char*)pic, cur->x, cur->y);
         cur++;
     }

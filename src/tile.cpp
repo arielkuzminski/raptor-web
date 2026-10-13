@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "common.h"
+#include "interp.h"
 #include "tile.h"
 #include "gfxapi.h"
 #include "rap.h"
@@ -176,6 +177,12 @@ TILE_Put(
 {
     int flag;
     flag = 0;
+
+    if (interp_recording)
+    {
+        INTERP_Op(IOP_TILE, inpic, x, y, 0, 0, 0);
+        return;
+    }
     
     if (y + 32 <= 0 || y >= SCREENHEIGHT)
         return;
@@ -430,6 +437,7 @@ TILE_Display(
     {
         pic = GLB_GetItem(ts->item);
         pic += 20;
+        INTERP_Key(IK_TILE, ts->mapspot);
         TILE_Put(pic, ts->x, ts->y);
         
         if (ts == lastspot)

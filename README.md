@@ -6,9 +6,9 @@ Raptor: Call of the Shadows, running in your browser. This is a WebAssembly port
 
 **Play:** https://arielkuzminski.github.io/raptor-web/
 
-<video src="docs/raptor.webm" controls muted width="100%"></video>
+![Raptor Web gameplay](docs/demo.gif)
 
-[Watch the demo (webm)](docs/raptor.webm)
+[Full-quality demo (webm)](docs/raptor.webm)
 
 ## You need your own game files
 

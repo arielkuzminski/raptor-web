@@ -390,8 +390,26 @@ static void HandleWindowEvent(SDL_WindowEvent *event)
     }
 }
 
+#ifdef __EMSCRIPTEN__
+// Called by the web page when the canvas changes size on screen, so the
+// canvas renders at the real display resolution ( web/index.html ).
+extern "C" EMSCRIPTEN_KEEPALIVE void I_WebResize(int w, int h)
+{
+    if (!initialized || w < SCREENWIDTH || h < SCREENHEIGHT / 2)
+        return;
+
+    SDL_SetWindowSize(screen, w, h);
+    need_resize = true;
+}
+#endif
+
 static bool ToggleFullScreenKeyShortcut(SDL_Keysym *sym)
 {
+#ifdef __EMSCRIPTEN__
+    // the page handles Alt+Enter: fullscreen for the whole stage with its background
+    (void)sym;
+    return false;
+#endif
     Uint16 flags = (KMOD_LALT | KMOD_RALT);
 #if defined(__MACOSX__)
     flags |= (KMOD_LGUI | KMOD_RGUI);

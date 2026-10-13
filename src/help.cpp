@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "common.h"
+#include "lang.h"
 #include "glbapi.h"
 #include "rap.h"
 #include "kbdapi.h"
@@ -78,7 +79,7 @@ HELP_Win(
             
             SWD_SetFieldItem(window, HELP_TEXT, startitem + curpage);
             
-            sprintf(temp, "PAGE : %02u", curpage + 1);
+            sprintf(temp, LANG_Str("PAGE : %02u"), curpage + 1);
             SWD_SetFieldText(window, HELP_HEADER, temp);
             
             SWD_ShowAllWindows();

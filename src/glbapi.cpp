@@ -9,6 +9,7 @@
 #include "glbapi.h"
 #include "vmemapi.h"
 #include "entypes.h"
+#include "lang.h"
 
 #ifdef _WIN32
 #include <io.h>
@@ -51,6 +52,9 @@ typedef struct
 	uint32_t offset;
 	uint32_t flags;
 	uint32_t lock_cnt;
+	const char *lang_data;      // translated replacement ( lang.cpp ) or NULL
+	uint32_t file_size;         // size in the .GLB ( size may be larger after translation )
+	int lang_swd;               // window gets translated labels appended
 }ITEMINFO;
 
 typedef struct
@@ -351,6 +355,19 @@ GLB_LoadIDT(
 			ii->size = LE_ULONG(key[n].filesize);
 			ii->offset = LE_ULONG(key[n].offset);
 			memcpy(ii->name, key[n].name, sizeof(ii->name));
+
+			char lang_name[sizeof(ii->name) + 1] = {0};
+			int lang_size;
+			memcpy(lang_name, ii->name, sizeof(ii->name));
+			ii->file_size = ii->size;
+			if ((ii->lang_data = LANG_Item(lang_name, &lang_size)) != NULL)
+				ii->size = lang_size;
+			else if ((lang_size = LANG_SwdExtra(lang_name)) > 0 && strstr(lang_name, "_SWD"))
+			{
+				ii->size += lang_size;
+				ii->lang_swd = 1;
+			}
+
 			ii++;
 		}
 		j += k;
@@ -452,7 +469,7 @@ GLB_Load(
 	ASSERT(filenum >= 0 && filenum < num_glbs);
 
 	handle = filedesc[filenum].handle;
-	
+
 	if (handle == 0)
 		return 0;
 
@@ -463,18 +480,26 @@ GLB_Load(
 
 	if (inmem != NULL)
 	{
-		if (ii->vm_mem.obj != NULL && inmem != ii->vm_mem.obj)
+		if (ii->lang_data)
+			memcpy(inmem, ii->lang_data, ii->size);
+		else if (ii->vm_mem.obj != NULL && inmem != ii->vm_mem.obj)
 			memcpy(inmem, ii->vm_mem.obj, ii->size);
 		else
 		{
 			fseek(handle, ii->offset, SEEK_SET);
-			fread(inmem, ii->size, 1, handle);
+			fread(inmem, ii->file_size, 1, handle);
 #ifdef _SCOTTGAME
 			if (ii->flags & ITF_ENCODED)
 			{
-				GLB_DeCrypt(serial, inmem, ii->size);
+				GLB_DeCrypt(serial, inmem, ii->file_size);
 			}
 #endif
+			if (ii->lang_swd)
+			{
+				char lang_name[sizeof(ii->name) + 1] = {0};
+				memcpy(lang_name, ii->name, sizeof(ii->name));
+				LANG_PatchSwd(inmem, ii->file_size, lang_name);
+			}
 		}
 	}
 	

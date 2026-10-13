@@ -3,6 +3,7 @@
 #include <limits.h>
 #include "SDL_filesystem.h"
 #include "common.h"
+#include "lang.h"
 #include "loadsave.h"
 #include "rap.h"
 #include "gfxapi.h"
@@ -901,7 +902,7 @@ RAP_LoadWin(
             
             case LOAD_DEL:
                 update = 1;
-                sprintf(temp, "Delete Pilot %s ?", tplr.callsign);
+                sprintf(temp, LANG_Str("Delete Pilot %s ?"), tplr.callsign);
                 if (WIN_AskBool(temp))
                 {
                     remove(filenames[pos]);
@@ -1090,7 +1091,12 @@ RAP_WriteDefaultSetup(
     INI_PutPreferenceLong("JoyStick", "FireSp", 1);
     INI_PutPreferenceLong("JoyStick", "ChangeSp", 2);
     INI_PutPreferenceLong("JoyStick", "MegaFire", 3);
+#if __EMSCRIPTEN__
+    // Browsers allow fullscreen only after a user gesture (Alt+Enter in game)
+    INI_PutPreferenceLong("Video", "fullscreen", 0);
+#else
     INI_PutPreferenceLong("Video", "fullscreen", 1);
+#endif //__EMSCRIPTEN__
 #if __ANDROID__
     INI_PutPreferenceLong("Video", "aspect_ratio_correct", 0);
     INI_PutPreferenceLong("Video", "txt_fullscreen", 1);

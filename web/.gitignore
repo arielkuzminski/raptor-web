@@ -1,0 +1,5 @@
+# Wynik budowania i oryginalne dane gry (chronione prawem autorskim - nie commitować)
+dist/
+data/
+*.GLB
+*.glb

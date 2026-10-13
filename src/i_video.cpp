@@ -30,6 +30,10 @@
 #include <windows.h>
 #endif
 
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#endif
+
 #include "common.h"
 #include "i_video.h"
 #include "m_misc.h"
@@ -412,6 +416,29 @@ static void I_ToggleFullScreen(void)
     }
 }
 
+//
+// I_BrowserYield
+// The game uses blocking loops (wait for frame, wait for key). In a browser
+// the page freezes unless control returns to the event loop, so with ASYNCIFY
+// we pause here at most every few milliseconds to let the browser draw the
+// canvas, play audio and deliver input events.
+//
+void I_BrowserYield(int force)
+{
+#ifdef __EMSCRIPTEN__
+    static double last_yield;
+    double now = emscripten_get_now();
+
+    if (force || now - last_yield >= 8.0)
+    {
+        emscripten_sleep(0);
+        last_yield = emscripten_get_now();
+    }
+#else
+    (void)force;
+#endif
+}
+
 void I_GetEvent(void)
 {
     extern void I_HandleKeyboardEvent(SDL_Event *sdlevent);
@@ -420,6 +447,8 @@ void I_GetEvent(void)
     extern void I_HandleTouchEvent(SDL_Event *sdlevent);
 
     SDL_Event sdlevent;
+
+    I_BrowserYield(0);
 
     SDL_PumpEvents();
 
@@ -827,6 +856,8 @@ void I_FinishUpdate (void)
     // Draw!
 
     SDL_RenderPresent(renderer);
+
+    I_BrowserYield(1);
 
 #if 0
     // Restore background and undo the disk indicator, if it was drawn.

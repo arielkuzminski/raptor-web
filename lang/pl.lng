@@ -1,0 +1,1867 @@
+# Raptor: Call of the Shadows - język polski
+# Tłumaczenie fanowskie. Format: tools/lang_tool.py
+@@ STRINGS
+# --- Pola okien ---
+STORE_SWD.STATS = MASZ
+MAIN_SWD.DEMO = D = DEMO
+MAIN_SWD.#9 = F1=POMOC
+SHIPCOMP_SWD.GAME1 = SEKTOR BRAVO
+SHIPCOMP_SWD.GAME2 = SEKTOR TANGO
+SHIPCOMP_SWD.GAME3 = RUBIEŻE
+SHIPCOMP_SWD.AUTO = AUTOPILOT
+HANGAR_SWD.MISSION = LOT NA MISJĘ
+HANGAR_SWD.SUPPLIES = ZAOPATRZENIE
+HANGAR_SWD.MAIN_MENU = MENU GŁÓWNE
+HANGAR_SWD.QSAVE = SZYBKI ZAPIS
+ASK_SWD.YES = TAK
+ASK_SWD.NO = NIE
+HELP_SWD.UP = WSTECZ
+HELP_SWD.DOWN = DALEJ
+HELP_SWD.DONE = GOTOWE
+HELP_SWD.HEADER = STR. 01
+HELP_SWD.#10 = RAPTOR: Call of the Shadows
+LOAD_SWD.DEL = USUŃ
+LOAD_SWD.LOAD = WCZYTAJ
+LOAD_SWD.CANCEL = ANULUJ
+LOAD_SWD.#7 = IMIĘ
+LOAD_SWD.#8 = KRYPTONIM
+LOAD_SWD.#11 = KREDYTY
+ASKDIFF_SWD.TRAIN = TRENING
+ASKDIFF_SWD.EASY = REKRUT
+ASKDIFF_SWD.MED = WETERAN
+ASKDIFF_SWD.HARD = ELITA
+ASKDIFF_SWD.ABORT = PRZERWIJ
+ASKDIFF_SWD.#11 = WYBIERZ POZIOM
+OPTS_SWD.DETAIL = DETALE: DUŻO
+OPTS_SWD.EXIT = WYJDŹ
+OPTS_SWD.#8 = OPCJE
+OPTS_SWD.#9 = GŁOŚN. MUZYKI
+OPTS_SWD.#10 = GŁOŚN. EFEKTÓW
+# --- Napisy z kodu gry ---
+FLY MISSION = LOT NA MISJĘ
+SUPPLY ROOM = ZAOPATRZENIE
+EXIT HANGAR = WYJŚCIE Z HANGARU
+SAVE PILOT = ZAPISZ PILOTA
+ENTER NAME AND CALLSIGN = WPISZ IMIĘ I KRYPTONIM
+CHANGE ID PICTURE = ZMIEŃ ZDJĘCIE
+EXIT = WYJŚCIE
+LOW DETAIL = DETALE: MAŁO
+HIGH DETAIL = DETALE: DUŻO
+GAME PAUSED = PAUZA
+EXIT TO DOS = WYJŚĆ Z GRY
+TRAIN MODE plays 4 of 9 levels! = TRENING to 4 z 9 poziomów!
+Pilot NAME and CALLSIGN Used ! = Taki pilot już istnieje!
+ERROR : YOU MUST DELETE A PILOT = BŁĄD: USUŃ JAKIEGOŚ PILOTA
+PLAYER ABORTED! = PRZERWANO!
+Save %s - %s ? = Zapisać %s - %s ?
+BRAVO SECTOR = SEKTOR BRAVO
+TANGO SECTOR = SEKTOR TANGO
+OUTER REGIONS = RUBIEŻE
+WAVE %d = FALA %d
+FINAL WAVE %d = OSTATNIA FALA %d
+No Pilots to Load = Brak pilotów do wczytania
+Abort Mission ? = Przerwać misję ?
+File open Error = Błąd otwarcia pliku
+Load Player Error = Błąd wczytania pilota
+Save Player Error !!! = Błąd zapisu pilota !!!
+Delete Pilot %s ? = Usunąć pilota %s ?
+Pilot Removed ! = Pilot usunięty !
+PAGE : %02u = STR. %02u
+COST = CENA
+RESALE = ODKUP
+ACTIVATE SELL MODE = TRYB SPRZEDAŻY
+ACTIVATE BUY MODE = TRYB ZAKUPU
+NEXT ITEM = NASTĘPNY
+PREVIOUS ITEM = POPRZEDNI
+BUY AN ITEM = KUP
+SELL AN ITEM = SPRZEDAJ
+HDE MAIN DISPLAY = UKRYJ EKRAN
+@@ CREDITS_TXT
+TEXT_IMAGE SMCYGLOG_PIC 100 10
+
+TEXT_COLOR 80
+TEXT_POS 31 64
+PROGRAMISTA:
+
+TEXT_POS 195 64
+SCOTT HOST
+
+TEXT_POS 31 85
+GRAFICY:
+
+TEXT_POS 195 85
+RICH FLEIDER
+TIM NEVEU
+
+TEXT_POS 31 117
+PROJEKT POZIOMÓW:
+
+TEXT_POS 195 117
+JIM MOLINETS
+
+TEXT_POS 31 138
+SYSTEM DŹWIĘKU:
+
+TEXT_POS 195 138
+PAUL RADEK
+
+TEXT_POS 31 159
+MUZYKA:
+
+TEXT_POS 195 159
+MATT MURPHY
+
+TEXT_POS 31 180
+MOTYW APOGEE:
+
+TEXT_POS 195 180
+BOBBY PRINCE
+@@ ORDER_TXT
+TEXT_COLOR 84
+TEXT_POS 0 5
+ZAMÓW MISJE 2 I 3
+POD NUMEREM:
+
+TEXT_COLOR 80
+1-800-GAME-123
+
+TEXT_COLOR 84
+TEXT_POS 0 44
+TYLKO $34.95
+PLUS $5.00
+ZA WYSYŁKĘ.
+
+TEXT_POS 0 84
+ZAMÓWIENIA SPOZA
+USA I INNE INFO:
+ZOBACZ DZIAŁ
+REJESTRACJI
+W GRZE.
+@@ END0_TXT
+TEXT_POS 32 17
+TEXT_COLOR 84
+Gratulacje! Ukończyłeś szkolenie
+TEXT_DOWN 5
+pilota i jesteś gotów do służby
+TEXT_DOWN 5
+czynnej. Cała zarobiona gotówka
+TEXT_DOWN 5
+oraz bronie znalezione lub kupione
+TEXT_DOWN 5
+podczas testów pokryją koszty
+TEXT_DOWN 5
+szkolenia. Od teraz jesteś zdany
+TEXT_DOWN 5
+tylko na siebie. Powodzenia, będzie
+TEXT_DOWN 5
+ci potrzebne.
+TEXT_DOWN 5
+@@ END1_TXT
+TEXT_POS 32 13
+TEXT_COLOR 84
+  Oglądasz się za siebie, gdy ruiny
+TEXT_DOWN 5
+platformy Lithos Petroleum nikną
+TEXT_DOWN 5
+w zasnutej dymem dali. Nie tylko
+TEXT_DOWN 5
+zostawiłeś swój ślad, ale też
+TEXT_DOWN 5
+utorowałeś drogę temu, co nadejdzie.
+TEXT_DOWN 5
+Myślami jesteś już przy kolejnych
+TEXT_DOWN 5
+misjach, gdzie większe ryzyko
+TEXT_DOWN 5
+oznacza większe nagrody.
+TEXT_DOWN 5
+Los wskazał ci drogę do chwały.
+TEXT_DOWN 5
+Reszta zależy od ciebie.
+TEXT_DOWN 5
+@@ END2_TXT
+TEXT_POS 20 13
+TEXT_COLOR 84
+    Płonący wrak spada w samo serce
+TEXT_DOWN 5
+lasu. Jasny błysk i ogłuszający
+TEXT_DOWN 5
+huk, które po nim następują, mówią
+TEXT_DOWN 5
+ci, że twoja robota tutaj skończona.
+TEXT_DOWN 5
+Swoimi umiejętnościami zdobyłeś
+TEXT_DOWN 5
+szacunek wielu, nawet najbardziej
+TEXT_DOWN 5
+zatwardziałych krytyków. Wróg będzie
+TEXT_DOWN 5
+teraz czujny i przygotowany, by
+TEXT_DOWN 5
+sprostać twojej rosnącej sławie.
+TEXT_DOWN 5
+Ta myśl niepokoi cię najbardziej.
+TEXT_DOWN 5
+@@ END3_TXT
+TEXT_POS 30 13
+TEXT_COLOR 84
+    Wciskasz przepustnicę do oporu,
+TEXT_DOWN 5
+odpalając dopalacz, by uciec od
+TEXT_DOWN 5
+scen cichego zniszczenia, które
+TEXT_DOWN 5
+zostawiasz za sobą. Marzenia
+TEXT_DOWN 5
+o bogactwie, które tak długo ci
+TEXT_DOWN 5
+umykały, właśnie się spełniły.
+TEXT_DOWN 5
+W otaczającej cię ciemności
+TEXT_DOWN 5
+grzeje cię świadomość, że nikt
+TEXT_DOWN 5
+nie może poszczycić się większym
+TEXT_DOWN 5
+zwycięstwem niż twoje.
+TEXT_DOWN 5
+@@ REG_VER1_TXT
+TEXT_COLOR 84
+TEXT_POS 28 15
+Dziękujemy za zakup i wspieranie
+TEXT_DOWN 5
+gier Apogee. Każda z nich to praca
+TEXT_DOWN 5
+programistów, grafików, muzyków
+TEXT_DOWN 5
+i kierowników projektu. Wszyscy
+TEXT_DOWN 5
+liczymy na twoje wsparcie, by
+TEXT_DOWN 5
+dalej tworzyć nowoczesne gry,
+TEXT_DOWN 5
+które przede wszystkim dają
+TEXT_DOWN 5
+radość z grania.
+TEXT_DOWN 5
+@@ REG_VER2_TXT
+TEXT_COLOR 145
+TEXT_POS 10 5
+WAŻNE:
+
+TEXT_COLOR 84
+TEXT_POS 25 21
+Nie rozpowszechniaj tej gry wśród
+TEXT_DOWN 3
+znajomych ani w sieciach BBS.
+TEXT_DOWN 3
+To szkodzi autorom Apogee i jest
+TEXT_DOWN 3
+nielegalne. Nie wspieraj piractwa.
+TEXT_DOWN 3
+Jeśli chcesz podzielić się grami
+TEXT_DOWN 3
+Apogee ze znajomymi, daj im
+TEXT_DOWN 3
+WERSJĘ SHAREWARE.
+TEXT_DOWN 3
+
+TEXT_DOWN 3
+          Dziękujemy.
+TEXT_DOWN 3
+@@ HELP1_TXT
+TEXT_COLOR 80
+TEXT_POS 2 2
+JAK UŻYWAĆ POMOCY
+
+TEXT_COLOR 80
+TEXT_POS 8 16
+KLAWISZ F1:
+
+TEXT_COLOR 84
+TEXT_POS 16 29
+F1 na dowolnym
+ekranie gry
+otwiera okno
+pomocy dla
+tego ekranu.
+
+TEXT_COLOR 80
+TEXT_POS 8 87
+PAGE UP:
+
+TEXT_COLOR 84
+TEXT_POS 16 98
+Poprzednia
+strona.
+
+TEXT_COLOR 80
+TEXT_POS 8 124
+PAGE DOWN:
+
+TEXT_COLOR 84
+TEXT_POS 16 135
+Następna strona.
+
+TEXT_COLOR 80
+TEXT_POS 165 16
+GOTOWE LUB ESC:
+
+TEXT_COLOR 84
+TEXT_POS 173 27
+Zamyka pomoc.
+
+TEXT_COLOR 80
+TEXT_POS 165 43
+KLAWISZ HOME:
+
+TEXT_COLOR 84
+TEXT_POS 173 54
+Pierwsza strona.
+
+TEXT_COLOR 80
+TEXT_POS 165 70
+KLAWISZ END:
+
+TEXT_COLOR 84
+TEXT_POS 173 81
+Ostatnia
+strona.
+
+TEXT_COLOR 80
+TEXT_POS 165 105
+UWAGA: F2 na
+ekranie hangaru
+szybko zapisuje
+pilota.
+@@ STORY1_TXT
+TEXT_COLOR 84
+TEXT_POS 15 7
+  Turbiny silnika ryczą, gdy spadasz
+z nieba. Zaskoczeni żołnierze unoszą
+wzrok w samą porę, by ujrzeć ogień
+działek w skrzydłach. Czujesz lekkie
+szarpnięcie, gdy rakiety mkną do
+celów. Błysk w oddali mówi ci, że
+zrobiły swoje - tak jak i ty.
+Megakorporacje płacą dobrze tym,
+którzy są dość dobrzy, by przeżyć.
+Wzywają cię w cień, obiecując
+bogactwo, a ty odpowiadasz
+jedynym sposobem, jaki znasz.
+@@ OVERVW01_TXT
+TEXT_COLOR 80
+TEXT_POS 3 2
+PRZEGLĄD
+
+TEXT_COLOR 84
+TEXT_POS 9 18
+  Grę zaczynasz w Hangarze, który
+będzie twoją bazą operacyjną. Stąd
+możesz wybrać Lot na misję, przejść
+do Zaopatrzenia, zapisać grę opcją
+Zapisz pilota lub wrócić do menu.
+
+
+TEXT_POS 9 89
+  Lot na misję: przenosi cię do
+komputera pokładowego. Tam zaczniesz
+pierwszą misję lub będziesz kontynuować
+grę (po wizycie w Zaopatrzeniu).
+@@ OVERVW02_TXT
+TEXT_COLOR 80
+TEXT_POS 5 2
+PRZEGLĄD - CIĄG DALSZY
+
+TEXT_COLOR 84
+TEXT_POS 11 18
+  Zaopatrzenie: tu wydasz ciężko
+zarobione pieniądze. Po misji
+zajrzyj tu, by ulepszyć uzbrojenie
+swojego myśliwca.
+
+TEXT_POS 11 67
+  W menu głównym możesz:
+stworzyć pilota (Nowa misja),
+wczytać zapisanego pilota, ustawić
+głośność muzyki i efektów oraz
+poziom detali (Opcje gry),
+obejrzeć twórców, wrócić do gry
+lub wyjść do systemu.
+@@ TRAIN01_TXT
+TEXT_COLOR 80
+TEXT_POS 5 2
+POZIOMY TRUDNOŚCI
+
+TEXT_COLOR 84
+TEXT_POS 11 18
+  Trening: pozwala poznać grę
+i sterowanie. Zaczynasz od pierwszego
+poziomu wybranej gry i możesz
+przelecieć pierwsze cztery fale.
+Po ich ukończeniu wrócisz do fali
+pierwszej, tym razem na poziomie
+Rekrut. Zaczniesz od zera: bez
+pieniędzy i tylko z karabinami
+maszynowymi.
+@@ TRAIN02_TXT
+TEXT_COLOR 80
+TEXT_POS 5 2
+POZIOMY TRUDNOŚCI - CIĄG DALSZY
+
+TEXT_COLOR 84
+TEXT_POS 11 18
+Rekrut:  odpowiednik poziomu łatwego.
+
+TEXT_POS 11 34
+Weteran: średni poziom trudności.
+
+TEXT_POS 11 50
+Elita:   poziom trudny.
+
+TEXT_POS 11 66
+Z każdym wyższym poziomem trudności
+w każdej fali pojawia się więcej
+wrogów, trudniej ich zniszczyć,
+a ich strzały zadają większe
+obrażenia.
+@@ OVERVW03_TXT
+TEXT_COLOR 80
+TEXT_POS 5 2
+BONUSY
+
+TEXT_COLOR 84
+TEXT_POS 11 18
+Bonusy są na każdym poziomie.
+Pojawiają się w szopie
+z bonusem:
+TEXT_IMAGE BONUS1G1_PIC 120 38
+
+TEXT_POS  170 40
+lub statku:
+TEXT_IMAGE SHIP24G1_PIC 235 28
+
+TEXT_COLOR 84
+TEXT_POS 11 71
+  W grze są dwa główne rodzaje
+bonusów.
+
+TEXT_POS 11 98
+1) Bonusy z bronią, od razu
+zamontowane i gotowe do użycia.
+To kilka przedmiotów dostępnych
+także w Zaopatrzeniu.
+@@ OVERVW04_TXT
+TEXT_COLOR 80
+TEXT_POS 5 2
+BONUSY - CIĄG DALSZY
+
+TEXT_COLOR 84
+TEXT_POS 11 18
+2) Bonusy pieniężne, dodawane
+do konta, gdy tylko je zbierzesz.
+Należą do nich:
+
+TEXT_POS 16 62
+Broń strzelecka
+TEXT_POS  221  67
+$35,200
+TEXT_IMAGE BONUS19_PIC 200 62
+
+TEXT_POS 16 78
+Izotopy radioaktywne
+TEXT_POS 221 83
+$55,700
+TEXT_IMAGE BONUS18_PIC 200 78
+
+TEXT_POS 16 94
+Taelit
+TEXT_POS 221 99
+$76,000
+TEXT_IMAGE BONUS17_PIC 200 94
+
+TEXT_POS 16 110
+Rdzeń mikrofuzyjny
+TEXT_POS 221 115
+$93,800
+TEXT_IMAGE BONUS16_PIC 200 110
+
+TEXT_POS 16 126
+Surowa ruda freylium
+TEXT_POS 221 131
+$122,500
+TEXT_IMAGE BONUS20_PIC 200 126
+@@ OVERVW05_TXT
+TEXT_COLOR 80
+TEXT_POS 5 2
+BONUSY - CIĄG DALSZY
+
+TEXT_COLOR 84
+TEXT_POS 11 18
+Jest też jeden bonus specjalny.
+
+TEXT_POS 11 39
+Bonus mikrotaelitowy:
+
+TEXT_IMAGE BONUS22_PIC 200 35
+
+TEXT_POS 11 60
+Pojawia się po zniszczeniu
+niektórych statków. To szczątki
+rdzenia silnika zniszczonego
+statku, każdy wart
+$50.
+@@ OVERVW06_TXT
+TEXT_COLOR 80
+TEXT_POS 5 2
+EKRAN GRY
+
+TEXT_COLOR 84
+TEXT_POS 11 18
+   Ekran gry ma sześć ważnych miejsc:
+
+TEXT_POS 11 34
+1) Pieniądze: stan konta widać na górze
+ekranu, pośrodku. Rośnie on
+automatycznie, gdy niszczysz cele.
+
+TEXT_POS 11 83
+2) Osłony: pasek stanu zwykłych osłon
+widać po prawej stronie ekranu.
+Spada, gdy otrzymujesz trafienia.
+Osłony ładują się, gdy nie strzelasz,
+na wszystkich poziomach trudności
+z wyjątkiem Elity.
+@@ OVERVW07_TXT
+TEXT_COLOR 80
+TEXT_POS 5 2
+EKRAN GRY - CIĄG DALSZY
+
+TEXT_COLOR 84
+TEXT_POS 11 18
+3) Broń specjalna: widać ją w prawym
+górnym rogu ekranu. Klawiszem Alt
+przełączasz kolejne bronie, możesz
+też nacisnąć klawisz z numerem
+przypisanym do danej broni.
+
+TEXT_POS 11 81
+1: Rakiety niekierow.
+2: Minidziałko
+3: Wieżyczka laser.
+4: Wyrzutnia rakiet
+5: Rakiety pow.-pow.
+6: Rakiety pow.-ziemia
+
+TEXT_POS 160 81
+7: Bomba
+8: Zakłócacz
+9: Działo puls.
+0: Promień śmierci
+-: Podwójny laser
+@@ OVERVW08_TXT
+TEXT_COLOR 80
+TEXT_POS 5 2
+EKRAN GRY - CIĄG DALSZY
+
+TEXT_COLOR 84
+TEXT_POS 11 18
+4) Osłona fazowa: jedyna broń
+specjalna widoczna w lewym górnym
+rogu. Używa takiego samego paska
+jak zwykłe osłony, ale po drugiej
+stronie ekranu. W odróżnieniu
+od zwykłych osłon nie ładuje się,
+ale możesz mieć kilka warstw
+Osłony fazowej.
+@@ OVERVW09_TXT
+TEXT_COLOR 80
+TEXT_POS 5 2
+EKRAN GRY - CIĄG DALSZY
+
+TEXT_COLOR 84
+TEXT_POS 11 18
+5) Megabomba: w lewym dolnym rogu
+ekranu zobaczysz małe ikony, po
+jednej na każdą posiadaną
+Megabombę. Aby zrzucić Megabombę,
+naciśnij Spację.
+
+TEXT_POS 11 84
+6) Pasek bossa: na dole ekranu,
+pośrodku. Pokazuje, ile osłon
+zostało bossowi. Pasek pojawia
+się dopiero po kupieniu
+Skanera jonowego.
+@@ GAMEHLP1_TXT
+TEXT_COLOR 80
+TEXT_POS 2 2
+POMOC - STEROWANIE
+
+TEXT_POS 5 18
+MYSZ
+
+TEXT_COLOR 84
+TEXT_POS 11 34
+RUCH:
+
+TEXT_COLOR 65
+TEXT_POS 110 34
+Ruch myszy przesuwa
+kursor lub statek.
+
+
+TEXT_COLOR 84
+TEXT_POS 11 72
+LEWY:
+
+TEXT_COLOR 65
+TEXT_POS 110 72
+Strzela z działek i
+wybranej broni specjalnej.
+
+TEXT_COLOR 84
+TEXT_POS 11 99
+PRAWY:
+
+TEXT_COLOR 65
+TEXT_POS 110 99
+Przełącza kolejne
+bronie specjalne.
+
+TEXT_COLOR 84
+TEXT_POS 11 126
+ŚRODKOWY:
+
+TEXT_COLOR 65
+TEXT_POS 110 126
+Zrzuca Megabombę.
+@@ GAMEHLP2_TXT
+TEXT_COLOR 80
+TEXT_POS 2 2
+POMOC - STEROWANIE
+
+TEXT_POS 5 18
+JOYSTICK
+
+TEXT_COLOR 84
+TEXT_POS 11 34
+RUCH:
+
+TEXT_COLOR 65
+TEXT_POS 100 34
+Ruch joysticka przesuwa
+statek w trakcie gry lub
+kursor na innych
+ekranach.
+
+TEXT_COLOR 84
+TEXT_POS 11 83
+PRZYCISK 1:
+
+TEXT_COLOR 65
+TEXT_POS 100 83
+Strzela z działek i
+wybranej broni specjalnej.
+
+TEXT_COLOR 84
+TEXT_POS 11 110
+PRZYCISK 2:
+
+TEXT_COLOR 65
+TEXT_POS 100 110
+Przełącza kolejne
+bronie specjalne.
+
+TEXT_COLOR 84
+TEXT_POS 11 137
+SPACJA:
+
+TEXT_COLOR 65
+TEXT_POS 100 137
+Zrzuca Megabombę.
+@@ GAMEHLP3_TXT
+TEXT_COLOR 80
+TEXT_POS 2 2
+POMOC - STEROWANIE
+
+TEXT_POS 5 18
+THRUSTMASTER
+
+TEXT_COLOR 84
+TEXT_POS 11 34
+RUCH:
+
+TEXT_COLOR 65
+TEXT_POS 100 34
+Ruch joysticka przesuwa
+statek w trakcie gry lub
+kursor na innych
+ekranach.
+
+TEXT_COLOR 84
+TEXT_POS 11 83
+SPUST:
+
+TEXT_COLOR 65
+TEXT_POS 100 83
+Strzela z działek i
+wybranej broni specjalnej.
+
+TEXT_COLOR 84
+TEXT_POS 11 110
+PRZYCISK 1:
+
+TEXT_COLOR 65
+TEXT_POS 100 110
+Przełącza kolejne
+bronie specjalne.
+
+TEXT_COLOR 84
+TEXT_POS 11 137
+PRZYCISK 2:
+
+TEXT_COLOR 65
+TEXT_POS 100 137
+Zrzuca Megabombę.
+@@ GAMEHLP4_TXT
+TEXT_COLOR 80
+TEXT_POS 2 2
+POMOC - STEROWANIE
+
+TEXT_POS 5 18
+PAD GRAVIS
+
+TEXT_COLOR 84
+TEXT_POS 11 34
+RUCH:
+
+TEXT_COLOR 65
+TEXT_POS 104 34
+Krzyżak przesuwa statek
+w trakcie gry lub kursor
+na innych ekranach.
+
+
+TEXT_COLOR 84
+TEXT_POS 11 83
+PRZYCISK 1:
+
+TEXT_COLOR 65
+TEXT_POS 104 83
+Strzela z działek i
+wybranej broni specjalnej.
+
+TEXT_COLOR 84
+TEXT_POS 11 110
+PRZYCISK 2:
+
+TEXT_COLOR 65
+TEXT_POS 104 110
+Przełącza kolejne
+bronie specjalne.
+
+TEXT_COLOR 84
+TEXT_POS 11 137
+PRZYCISK 3:
+
+TEXT_COLOR 65
+TEXT_POS 104 137
+Zrzuca Megabombę.
+@@ GAMEHLP5_TXT
+TEXT_COLOR 80
+TEXT_POS 2 2
+POMOC - STEROWANIE
+
+TEXT_POS 5 19
+KLAWIATURA
+
+TEXT_COLOR 84
+TEXT_POS 11 35
+STRZAŁKI:
+
+TEXT_COLOR 65
+TEXT_POS 100 35
+Sterują statkiem lub
+wybierają opcje na
+innych ekranach.
+
+TEXT_COLOR 84
+TEXT_POS 11 73
+CTRL:
+
+TEXT_COLOR 65
+TEXT_POS 100 73
+Strzela z działek i
+wybranej broni specjalnej.
+
+TEXT_COLOR 84
+TEXT_POS 11 100
+ALT:
+
+TEXT_COLOR 65
+TEXT_POS 100 100
+Przełącza kolejne
+bronie specjalne.
+
+TEXT_COLOR 84
+TEXT_POS 11 127
+SPACJA:
+
+TEXT_COLOR 65
+TEXT_POS 100 127
+Zrzuca Megabombę.
+@@ HINTS01_TXT
+TEXT_COLOR 80
+TEXT_POS 5 2
+PRZYDATNE WSKAZÓWKI
+
+TEXT_COLOR 84
+TEXT_POS 11 18
+1) Uważnie pilnuj stanu osłon!
+Po komunikacie "Shield Low"
+każde trafienie zabierze ci jedną
+broń specjalną. Warto doładować
+osłony przed każdym poziomem.
+
+
+TEXT_POS 11 83
+2) Jeśli możesz, kup Osłonę
+fazową. Da ci przewagę, która
+najpewniej wyciągnie cię
+z niejednej paskudnej sytuacji.
+@@ HINTS02_TXT
+TEXT_COLOR 80
+TEXT_POS 5 2
+PRZYDATNE WSKAZÓWKI - CIĄG DALSZY
+
+TEXT_COLOR 84
+TEXT_POS 11 18
+3) NIE taranuj innych statków.
+Zderzenie bardzo uszkodzi
+twój myśliwiec.
+
+TEXT_POS 11 56
+4) Strzelaj z wyprzedzeniem.
+
+TEXT_POS 11 72
+5) Pamiętaj: choć wszystkie bronie
+mają nieograniczoną amunicję,
+osłony ładują się, gdy nie strzelasz.
+Działa to na wszystkich poziomach
+trudności z wyjątkiem Elity.
+
+TEXT_POS 11 132
+6) Uważaj na Bojową Krowę!
+@@ NEWPLAY1_TXT
+TEXT_COLOR 80
+TEXT_POS 5 2
+NOWY PILOT
+
+TEXT_COLOR 84
+TEXT_POS 11 18
+WPISZ IMIĘ I KRYPTONIM:
+
+TEXT_COLOR 65
+TEXT_POS 17 29
+Wpisz imię i kryptonim, potem naciśnij
+Enter. Pojawi się okno z wyborem
+poziomu trudności. Po wybraniu
+poziomu przejdziesz automatycznie
+do ekranu Hangaru.
+
+
+TEXT_COLOR 84
+TEXT_POS 11 98
+ZMIANA ZDJĘCIA:
+
+TEXT_COLOR 65
+TEXT_POS 17 108
+Wybierz portret, klikając zdjęcie
+w legitymacji.
+@@ NEWPLAY2_TXT
+TEXT_COLOR 80
+TEXT_POS 5 2
+NOWY PILOT (KLAWIATURA)
+
+TEXT_COLOR 84
+TEXT_POS 11 18
+WPISZ IMIĘ I KRYPTONIM:
+
+TEXT_COLOR 65
+TEXT_POS 17 28
+Wpisz imię i kryptonim, potem naciśnij
+Enter. Pojawi się okno z wyborem
+poziomu trudności. Wybierz go
+strzałkami w górę lub w dół.
+Po wybraniu poziomu przejdziesz
+automatycznie do ekranu Hangaru.
+
+TEXT_COLOR 84
+TEXT_POS 11 105
+ZMIANA ZDJĘCIA:
+
+TEXT_COLOR 65
+TEXT_POS 17 116
+Wybierz portret jednym z klawiszy
+Ctrl.
+@@ LOADPLY1_TXT
+TEXT_COLOR 80
+TEXT_POS 5 2
+WCZYTAJ GRĘ
+
+TEXT_COLOR 84
+TEXT_POS 11 18
+USUŃ:
+
+TEXT_COLOR 65
+TEXT_POS 19 29
+Kliknij, by usunąć
+wybranego pilota.
+
+TEXT_COLOR 84
+TEXT_POS 11 56
+WCZYTAJ:
+
+TEXT_COLOR 65
+TEXT_POS 19 67
+Kliknij, by wczytać
+wybraną grę.
+
+TEXT_COLOR 84
+TEXT_POS 11 94
+POPRZEDNI/NASTĘPNY:
+
+TEXT_COLOR 65
+TEXT_POS 19 105
+Kliknij prawą strzałkę, by przejść
+do następnej zapisanej gry, lub
+lewą, by wrócić do
+poprzedniej.
+@@ LOADPLY2_TXT
+TEXT_COLOR 80
+TEXT_POS 2 2
+WCZYTAJ GRĘ (KLAWIATURA)
+
+TEXT_COLOR 84
+TEXT_POS 11 18
+USUŃ:
+
+TEXT_COLOR 65
+TEXT_POS 19 29
+Delete usuwa wybranego pilota.
+
+TEXT_COLOR 84
+TEXT_POS 11 45
+WCZYTAJ:
+
+TEXT_COLOR 65
+TEXT_POS 19 56
+Enter wczytuje wybranego pilota.
+
+TEXT_COLOR 84
+TEXT_POS 11 72
+POPRZEDNI/NASTĘPNY:
+
+TEXT_COLOR 65
+TEXT_POS 19 83
+Listę zapisanych pilotów
+przewijasz strzałkami w lewo
+i w prawo.
+@@ HANGHLP1_TXT
+TEXT_COLOR 80
+TEXT_POS 2 2
+HANGAR
+
+TEXT_COLOR 84
+TEXT_POS 5 18
+LOT NA MISJĘ:
+
+TEXT_COLOR 65
+TEXT_POS 11 29
+Kliknij, by włączyć komputer lotu.
+
+TEXT_COLOR 84
+TEXT_POS 5 45
+ZAOPATRZENIE:
+
+TEXT_COLOR 65
+TEXT_POS 11 56
+Kliknij, by wejść do magazynu.
+
+TEXT_COLOR 84
+TEXT_POS 5 72
+WYJŚCIE Z HANGARU:
+
+TEXT_COLOR 65
+TEXT_POS 11 83
+Kliknij, by wrócić do menu głównego.
+
+TEXT_COLOR 84
+TEXT_POS 5 99
+ZAPISZ PILOTA:
+
+TEXT_COLOR 65
+TEXT_POS 11 110
+Kliknij, by zapisać bieżącą grę.
+@@ HANGHLP2_TXT
+TEXT_COLOR 80
+TEXT_POS 2 2
+HANGAR (KLAWIATURA)
+
+TEXT_COLOR 84
+TEXT_POS 5 18
+Strzałkami wybierz pole, potem
+naciśnij Enter.
+
+TEXT_COLOR 84
+TEXT_POS 5 45
+LOT NA MISJĘ:
+
+TEXT_COLOR 65
+TEXT_POS 11 56
+Otwiera komputer pokładowy.
+
+TEXT_COLOR 84
+TEXT_POS 5 72
+ZAOPATRZENIE:
+
+TEXT_COLOR 65
+TEXT_POS 11 83
+Wejście do magazynu.
+
+TEXT_COLOR 84
+TEXT_POS 5 99
+WYJŚCIE Z HANGARU:
+
+TEXT_COLOR 65
+TEXT_POS 11 110
+Powrót do menu głównego.
+
+TEXT_COLOR 84
+TEXT_POS 5 124
+ZAPISZ PILOTA:
+
+TEXT_COLOR 65
+TEXT_POS 11 135
+Zapisuje bieżącą grę.
+@@ COMPHLP1_TXT
+TEXT_COLOR 80
+TEXT_POS 5 2
+KOMPUTER LOTU
+
+TEXT_COLOR 84
+TEXT_POS 11 18
+SEKTOR BRAVO:
+
+TEXT_COLOR 65
+TEXT_POS 19 29
+Wybiera grę pierwszą.
+
+TEXT_COLOR 84
+TEXT_POS 11 45
+SEKTOR TANGO:
+
+TEXT_COLOR 65
+TEXT_POS 19 56
+Wybiera grę drugą.
+
+TEXT_COLOR 84
+TEXT_POS 11 72
+RUBIEŻE:
+
+TEXT_COLOR 65
+TEXT_POS 19 83
+Wybiera grę trzecią.
+
+TEXT_COLOR 84
+TEXT_POS 11 99
+AUTOPILOT:
+
+TEXT_COLOR 65
+TEXT_POS 19 110
+Następna fala.
+
+TEXT_COLOR 84
+TEXT_POS 160 18
+CZERWONY PRZYCISK:
+
+TEXT_COLOR 65
+TEXT_POS 168 29
+Powrót do ekranu
+hangaru.
+@@ COMPHLP2_TXT
+TEXT_COLOR 80
+TEXT_POS 5 2
+KOMPUTER LOTU (KLAWIATURA)
+
+TEXT_COLOR 84
+TEXT_POS 11 18
+CZERWONY PRZYCISK:
+
+TEXT_COLOR 65
+TEXT_POS 19 29
+Powrót do hangaru,
+wybór klawiszem Esc.
+
+TEXT_COLOR 84
+TEXT_POS 11 56
+SEKTOR BRAVO:
+
+TEXT_COLOR 65
+TEXT_POS 19 67
+Wybiera grę pierwszą.
+
+TEXT_COLOR 84
+TEXT_POS 11 83
+SEKTOR TANGO:
+
+TEXT_COLOR 65
+TEXT_POS 19 94
+Wybiera grę drugą.
+
+TEXT_COLOR 84
+TEXT_POS 11 110
+RUBIEŻE:
+
+TEXT_COLOR 65
+TEXT_POS 19 121
+Wybiera grę trzecią.
+
+TEXT_COLOR 84
+TEXT_POS 160 18
+AUTOPILOT:
+
+TEXT_COLOR 65
+TEXT_POS 168 29
+Następna fala.
+
+TEXT_COLOR 84
+TEXT_POS 160 60
+Klawiszem TAB
+przełączasz
+kolejne opcje.
+@@ STORHLP1_TXT
+TEXT_IMAGE STOREHLP_PIC 2 13
+
+TEXT_COLOR 80
+TEXT_POS 2 2
+ZAOPATRZENIE
+
+TEXT_COLOR 84
+TEXT_POS 5 89
+1) WYJŚCIE:
+
+TEXT_COLOR 65
+TEXT_POS 11 102
+Powrót do hangaru.
+
+TEXT_COLOR 84
+TEXT_POS 5 117
+2) KUP:
+
+TEXT_COLOR 65
+TEXT_POS 11 130
+Tryb zakupu.
+
+TEXT_COLOR 84
+TEXT_POS 141 5
+3) SPRZEDAJ:
+
+TEXT_COLOR 65
+TEXT_POS 149 18
+Tryb sprzedaży.
+
+
+TEXT_COLOR 84
+TEXT_POS 141 36
+4) KUP/SPRZEDAJ:
+
+TEXT_COLOR 65
+TEXT_POS 149 49
+Kupuje lub sprzedaje.
+
+TEXT_COLOR 84
+TEXT_POS 141 67
+5) POPRZEDNI:
+
+TEXT_COLOR 65
+TEXT_POS 149 80
+Poprzedni przedmiot.
+
+TEXT_COLOR 84
+TEXT_POS 141 98
+6) NASTĘPNY:
+
+TEXT_COLOR 65
+TEXT_POS 149 111
+Następny przedmiot.
+@@ STORHLP2_TXT
+TEXT_COLOR 80
+TEXT_POS 5 2
+ZAOPATRZENIE (KLAWIATURA)
+
+TEXT_COLOR 84
+TEXT_POS 11 18
+WYJŚCIE:
+
+TEXT_COLOR 65
+TEXT_POS 19 29
+Klawisz Esc
+zamyka sklep.
+
+TEXT_COLOR 84
+TEXT_POS 11 67
+KUP/SPRZEDAJ:
+
+TEXT_COLOR 65
+TEXT_POS 19 78
+Włącza tryb zakupu
+lub sprzedaży.
+Spacją przełączasz
+między nimi.
+
+
+TEXT_COLOR 84
+TEXT_POS 152 18
+KUP/SPRZEDAJ RZECZ:
+
+TEXT_COLOR 65
+TEXT_POS 160 29
+Enter kupuje lub
+sprzedaje rzecz.
+
+TEXT_COLOR 84
+TEXT_POS 152 56
+POPRZEDNI/NASTĘPNY:
+
+TEXT_COLOR 65
+TEXT_POS 160 67
+Strzałki w lewo
+i w prawo lub
+klawisze Pg Up
+i Pg Down
+przewijają
+ofertę.
+@@ RAP1_TXT
+TEXT_IMAGE SMLAP_PIC 8 5
+
+TEXT_COLOR 80
+TEXT_POS  120 5
+ZAMÓW RAPTORA TERAZ!
+TYLKO $34.95
+(plus $5 za wysyłkę)
+
+
+TEXT_IMAGE NUMBER_PIC 120 45
+
+TEXT_COLOR 84
+TEXT_POS 21 69
+Zamówienia 24 godziny na dobę.
+Przyjmujemy karty kredytowe.
+
+TEXT_COLOR 80
+TEXT_POS 8 96
+W zamówieniu:
+
+TEXT_COLOR 84
+TEXT_POS 16 112
+-- Wszystkie trzy pełne akcji epizody.
+-- Nowe filmy i trudniejsi bossowie.
+-- Nowe, jeszcze groźniejsze bronie.
+@@ RAP2_TXT
+TEXT_COLOR 80
+TEXT_POS 2 2
+DLACZEGO WARTO?
+
+TEXT_COLOR 84
+TEXT_POS 8 21
+   Myślisz, że to już koniec? Ani trochę.
+Megakorporacje mają dla ciebie dużo więcej
+brudnej roboty. Czekają cię dziesiątki
+nowych statków oraz więksi,
+twardsi bossowie. Dodasz groźniejsze
+bronie do swojego arsenału. Zobaczysz
+więcej niezwykłych scen filmowych.
+Zanurzysz się w porywającej, rozbudowanej
+ścieżce dźwiękowej i oszałamiającej,
+ultrarealistycznej grafice.
+@@ WEAP01_TXT
+TEXT_COLOR 84
+TEXT_POS 5 5
+Jakie bronie? Choćby niesamowite nowe
+zabawki, które rozbiją wrogów na
+pojedyncze atomy. Wkrótce, od twórców
+Megabomby i samonaprowadzającego
+Minidziałka:
+
+TEXT_IMAGE ICON21_PIC 5 76
+
+TEXT_COLOR 80
+TEXT_POS 57 86
+BOMBA
+
+TEXT_COLOR 84
+TEXT_POS 5 106
+MK-133, bomba ogólnego przeznaczenia,
+która zostawi trwały ślad w terenie.
+@@ WEAP02_TXT
+TEXT_IMAGE ICON09_PIC 5 5
+
+TEXT_COLOR 80
+TEXT_POS 57 15
+ZAKŁÓCACZ ENERGII
+
+TEXT_COLOR 84
+TEXT_POS 11 36
+Zakłócacz przebija osłony wroga
+i porządnie je elektryzuje.
+
+
+TEXT_IMAGE ICON05_PIC 5 80
+
+TEXT_COLOR 80
+TEXT_POS 57 95
+WIEŻYCZKA LASEROWA
+
+TEXT_COLOR 84
+TEXT_POS 11 106
+OD55 Odin, natychmiastowy klasyk,
+pozwoli ci dosięgnąć i zmiażdżyć wroga.
+@@ WEAP03_TXT
+TEXT_IMAGE ICON13_PIC 5 5
+
+TEXT_COLOR 80
+TEXT_POS 52 15
+PROMIEŃ ŚMIERCI
+
+TEXT_COLOR 84
+TEXT_POS 11 36
+MSIL-Atlas to coś jak działo plazmowe
+na sterydach. Ten naprawdę doda
+ci sił.
+
+
+TEXT_IMAGE ICON12_PIC 5 80
+
+TEXT_COLOR 80
+TEXT_POS 57 95
+PODWÓJNY LASER
+
+TEXT_COLOR 84
+TEXT_POS 11 110
+Bliźniacze lazurowe wiązki CAL-10
+Eclipse spopielą wszystko na drodze.
+@@ RAP3_TXT
+TEXT_COLOR 80
+TEXT_POS 2 2
+Zamówienie pocztowe w Apogee:
+
+TEXT_COLOR 145
+TEXT_POS 16 21
+Apogee Software
+P.O. Box 496389
+Garland, TX 75049
+
+TEXT_COLOR 65
+TEXT_POS 160 21
+Wyślij $34.95
+(plus $5 wysyłka)
+z dołączonym
+plikiem ORDER.FRM.
+
+TEXT_COLOR 84
+TEXT_POS 8 70
+Zamawiając pocztą, podaj preferowany
+rozmiar dyskietek.
+
+TEXT_COLOR 80
+TEXT_POS 2 96
+Albo zamów FAKSEM:
+
+TEXT_COLOR 84
+TEXT_POS  8 107
+Faks (214) 278-4670, użyj pliku ORDER.FRM
+dołączonego do gry. Zamówienia faksem
+muszą zawierać dane karty kredytowej.
+@@ RAP4_TXT
+TEXT_COLOR 80
+TEXT_POS 2 2
+BBS APOGEE
+
+TEXT_COLOR 84
+TEXT_POS 16 21
+   BBS Software Creations działa
+całą dobę: nowe gry Apogee,
+aktualizacje i zapowiedzi
+nadchodzących tytułów.
+
+TEXT_COLOR 80
+TEXT_POS 8 86
+BBS Software Creations:
+
+TEXT_COLOR 145
+TEXT_POS 16 102
+ (508) 365-2359  2400 Baud
+ (508) 368-7036  9600-14.4K v.32bis
+ (508) 368-4137  14.4-16.8K HST/DS
+@@ RAP5_TXT
+TEXT_COLOR 80
+TEXT_POS 2 2
+Apogee w America Online!
+
+TEXT_COLOR 84
+TEXT_POS 11 18
+W America Online działa Forum Apogee,
+gdzie zawsze znajdziesz najnowsze gry
+Apogee. W działach wiadomości
+wymieniaj pomysły, uwagi i sekrety
+z innymi graczami i pomocą techniczną
+Apogee. Użyj słowa kluczowego
+"Apogee" (CTRL-K), by do nas dołączyć
+i dobrze się bawić.
+
+TEXT_COLOR 80
+TEXT_POS 8 106
+Chcesz dołączyć? Dzwoń za darmo:
+
+TEXT_COLOR 145
+TEXT_POS 8 117
+1-800-827-6364,
+
+TEXT_COLOR 80
+TEXT_POS 120 117
+i poproś o numer
+TEXT_POS 8 128
+6131, by dostać DARMOWY zestaw.
+@@ VEND00_TXT
+TEXT_COLOR 80
+TEXT_POS 5 2
+ZAMÓWIENIA ZAGRANICZNE:
+
+TEXT_COLOR 84
+TEXT_POS 21 28
+   Informacje o zamówieniach
+z zagranicy wyświetli program
+Dealers.exe uruchomiony z DOS-u.
+Pokaże on dystrybutorów Apogee
+na całym świecie z najnowszymi
+grami. Jeśli nie ma twojego kraju,
+zamów bezpośrednio w Apogee pod
+numerem:
+TEXT_COLOR 145
+TEXT_POS 105 105
+(214) 278-5655.
+@@ ITEM00_TXT
+TEXT_IMAGE ICON00_PIC 0 5
+
+TEXT_COLOR 80
+TEXT_POS 52 15
+MG21C REAVER
+PODWÓJNE KARABINY
+
+TEXT_COLOR 38
+TEXT_POS 52 31
+ZAWSZE NA POKŁADZIE
+
+TEXT_COLOR 67
+TEXT_POS 0 43
+STRZELA POCISKAMI 21 MM
+Z SZYBKOŚCIĄ 7500 NA SEK.
+TO PODSTAWOWA BROŃ
+WIĘKSZOŚCI PILOTÓW.
+@@ ITEM01_TXT
+TEXT_IMAGE ICON01_PIC 0 5
+
+TEXT_COLOR 80
+TEXT_POS 52 15
+DZIAŁO PLAZMOWE
+
+TEXT_COLOR 38
+TEXT_POS 52 23
+ZAWSZE NA POKŁADZIE
+
+TEXT_COLOR 67
+TEXT_POS 0 36
+FIRESTORM Z DEARBORN INDUSTRIES
+TO JEDEN Z NAJGROŹNIEJSZYCH
+DODATKÓW DO ARSENAŁU PILOTA.
+JEGO JEDYNA WADA: NIE ZOSTAŁ
+ZAPROJEKTOWANY DO ATAKOWANIA
+CELÓW NAZIEMNYCH.
+@@ ITEM02_TXT
+TEXT_IMAGE ICON02_PIC 0 5
+
+TEXT_COLOR 80
+TEXT_POS 52 15
+MIKRORAKIETY
+
+TEXT_COLOR 38
+TEXT_POS 52 23
+ZAWSZE NA POKŁADZIE
+
+TEXT_COLOR 67
+TEXT_POS 0 36
+ICH ROZMIAR I WAGA SPRAWIAJĄ,
+ŻE NIE SĄ ZBYT SKUTECZNE
+PRZECIW CELOM W POWIETRZU
+ANI NA ZIEMI, ALE NADRABIAJĄ
+TO SZYBKOSTRZELNOŚCIĄ.
+@@ ITEM03_TXT
+TEXT_IMAGE ICON03_PIC 0 5
+
+TEXT_COLOR 80
+TEXT_POS 52 15
+RAKIETA NIEKIEROWANA
+
+TEXT_COLOR 38
+TEXT_POS 52 23
+DO WYBORU
+
+TEXT_COLOR 67
+TEXT_POS 0 36
+DM1R PSYCHO NIE ZAWSZE LECI
+TAM, GDZIE TRZEBA, ALE TRAFIA
+CELE NAZIEMNE I POWIETRZNE,
+CO CZYNI JĄ BEZCENNYM
+DODATKIEM DO KAŻDEGO
+ARSENAŁU.
+@@ ITEM04_TXT
+TEXT_IMAGE ICON04_PIC 0 5
+
+TEXT_COLOR 80
+TEXT_POS 52 15
+AUTOMATYCZNE DZIAŁKO
+
+TEXT_COLOR 38
+TEXT_POS 52 23
+DO WYBORU
+
+TEXT_COLOR 67
+TEXT_POS 0 36
+TH19 THOR STRZELA POCISKAMI
+45 MM D.P.U. 4000 NA SEKUNDĘ.
+W POŁĄCZENIU Z SYSTEMEM
+NAMIERZANIA CELÓW NA ZIEMI
+I W POWIETRZU TO JEDNA
+Z NAJLEPSZYCH BRONI.
+@@ ITEM05_TXT
+TEXT_IMAGE ICON05_PIC 0 5
+
+TEXT_COLOR 80
+TEXT_POS 52 15
+WIEŻYCZKA LASEROWA
+
+TEXT_COLOR 38
+TEXT_POS 52 23
+DO WYBORU
+
+TEXT_COLOR 67
+TEXT_POS 0 36
+WIEŻYCZKA OD55 ODIN TO
+NAJLEPSZY WYBÓR DO WALKI
+POWIETRZNEJ. PODOBNA DO TH19
+THOR, ALE REAGUJE SZYBCIEJ
+I MA WIĘKSZĄ SIŁĘ OGNIA
+DZIĘKI LASEROWI.
+@@ ITEM06_TXT
+TEXT_IMAGE ICON06_PIC 0 5
+
+TEXT_COLOR 80
+TEXT_POS 52 15
+WYRZUTNIA RAKIET
+
+TEXT_COLOR 38
+TEXT_POS 52 23
+DO WYBORU
+
+TEXT_COLOR 67
+TEXT_POS 0 36
+AARL-1201 SCATTERPACK ODPALA
+WIĄZKĘ RAKIET HR-20 SPIKE,
+ŚWIETNĄ W POWIETRZNYCH
+POTYCZKACH.
+@@ ITEM07_TXT
+TEXT_IMAGE ICON07_PIC 0 5
+
+TEXT_COLOR 80
+TEXT_POS 52 15
+RAKIETA POW.-POW.
+
+TEXT_COLOR 38
+TEXT_POS 52 23
+DO WYBORU
+
+TEXT_COLOR 67
+TEXT_POS 0 36
+AIM-31 MAULER TO PODSTAWA
+WIĘKSZOŚCI ARMII OD CHWILI
+WPROWADZENIA W 1997 ROKU.
+NIEZRÓWNANA NIEZAWODNOŚĆ
+CZYNI GO NIEZBĘDNYM W KAŻDEJ
+WALCE POWIETRZNEJ.
+@@ ITEM08_TXT
+TEXT_IMAGE ICON08_PIC 0 5
+
+TEXT_COLOR 80
+TEXT_POS 52 15
+RAKIETA POW.-ZIEMIA
+
+TEXT_COLOR 38
+TEXT_POS 52 23
+DO WYBORU
+
+TEXT_COLOR 67
+TEXT_POS 0 36
+AGM-26L BANSHEE TO RAKIETA
+POWIETRZE-ZIEMIA NAPROWADZANA
+RADAREM, Z GŁOWICĄ KUMULACYJNĄ
+NISZCZĄCĄ MAŁE CELE NA ZIEMI.
+@@ ITEM09_TXT
+TEXT_IMAGE ICON21_PIC 0 5
+
+TEXT_COLOR 80
+TEXT_POS 52 15
+BOMBA
+
+TEXT_COLOR 38
+TEXT_POS 52 23
+DO WYBORU
+
+TEXT_COLOR 67
+TEXT_POS 0 36
+MK-133 TO BOMBA OGÓLNEGO
+PRZEZNACZENIA, POŁĄCZENIE
+ZWYKŁEJ BOMBY I BOMB
+KASETOWYCH. PRZY UDERZENIU
+RAZI NA BOKI I WYRZUCA
+PODPOCISKI DO PRZODU.
+@@ ITEM10_TXT
+TEXT_IMAGE ICON09_PIC 0 5
+
+TEXT_COLOR 80
+TEXT_POS 52 15
+ZAKŁÓCACZ ENERGII
+
+TEXT_COLOR 38
+TEXT_POS 52 23
+DO WYBORU
+
+TEXT_COLOR 67
+TEXT_POS 0 36
+ZAKŁÓCACZ PRZEBIJA OSŁONY
+WROGA, WYSYŁAJĄC IMPULS, KTÓRY
+PRZECIĄŻA JEGO SYSTEMY BRONI
+I CHWILOWO JE WYŁĄCZA. DZIAŁA
+JEDNAK TYLKO NA NIEKTÓRE
+STATKI.
+@@ ITEM11_TXT
+TEXT_IMAGE ICON10_PIC 0 5
+
+TEXT_COLOR 80
+TEXT_POS 52 15
+MEGABOMBA
+
+TEXT_COLOR 38
+TEXT_POS 52 23
+SPECJALNA
+
+TEXT_COLOR 67
+TEXT_POS 0 36
+CBU-80 GUILLOTINE TO JEDYNA
+BOMBA PODWÓJNEGO PRZEZNACZENIA.
+PO ZRZUCIE ROZSIEWA PODPOCISKI
+NA ZIEMI I W POWIETRZU, ZADAJĄC
+OGROMNE STRATY CELOM
+NAZIEMNYM I POWIETRZNYM.
+@@ ITEM12_TXT
+TEXT_IMAGE ICON11_PIC 0 5
+
+TEXT_COLOR 80
+TEXT_POS 52 15
+DZIAŁO PULSACYJNE
+
+TEXT_COLOR 38
+TEXT_POS 52 23
+DO WYBORU
+
+TEXT_COLOR 67
+TEXT_POS 0 36
+RX1 TSUNAMI GENERUJE IMPULS
+E.M.P. O ZMIENNEJ CZĘSTOTLIWOŚCI,
+SILNIEJSZY NIŻ WIĘKSZOŚĆ BRONI.
+RAZI CELE NA ZIEMI
+I W POWIETRZU - ŚWIETNY
+WYBÓR DLA KAŻDEGO PILOTA.
+@@ ITEM13_TXT
+TEXT_IMAGE ICON12_PIC 0 5
+
+TEXT_COLOR 80
+TEXT_POS 52 15
+PODWÓJNY LASER
+
+TEXT_COLOR 38
+TEXT_POS 52 23
+DO WYBORU
+
+TEXT_COLOR 67
+TEXT_POS 0 36
+CAL-10 ECLIPSE: NAJSILNIEJSZA
+BROŃ. BLIŹNIACZE LAZUROWE
+WIĄZKI SPOPIELĄ WSZYSTKO
+NA SWOJEJ DRODZE. PIERWSZA
+I OSTATNIA RZECZ, JAKIEJ
+POTRZEBUJE PILOT.
+@@ ITEM14_TXT
+TEXT_IMAGE ICON13_PIC 0 5
+
+TEXT_COLOR 80
+TEXT_POS 52 15
+PROMIEŃ ŚMIERCI
+
+TEXT_COLOR 38
+TEXT_POS 52 23
+DO WYBORU
+
+TEXT_COLOR 67
+TEXT_POS 0 36
+MSIL-ATLAS TO JEDNA
+Z NAJPOTĘŻNIEJSZYCH BRONI.
+EMITUJE STRUMIEŃ CZĄSTEK
+Z NIEWIARYGODNĄ PRĘDKOŚCIĄ.
+ZWYKLE NISZCZY WIĘKSZOŚĆ
+CELÓW JEDNYM STRZAŁEM.
+@@ ITEM15_TXT
+TEXT_IMAGE ICON14_PIC 0 5
+
+TEXT_COLOR 80
+TEXT_POS 52 15
+OSŁONA FAZOWA
+
+TEXT_COLOR 38
+TEXT_POS 52 23
+SPECJALNA
+
+TEXT_COLOR 67
+TEXT_POS 0 36
+SA17 ARES WZMACNIA ZWYKŁE
+OSŁONY. TWORZY WOKÓŁ
+MYŚLIWCA POLE ENERGII, KTÓRE
+POCHŁANIA OGIEŃ WROGA, AŻ
+WYCZERPIE SIĘ JEGO
+ZASILANIE.
+@@ ITEM16_TXT
+TEXT_IMAGE ICON15_PIC 0 5
+
+TEXT_COLOR 80
+TEXT_POS 52 15
+MODUŁ ENERGII
+
+TEXT_COLOR 67
+TEXT_POS 0 34
+ODNAWIA ZWYKŁE OSŁONY. TO
+KREW KAŻDEGO PILOTA - TA
+MAŁA PACZKA JEST ZWYKLE
+PIERWSZA NA LIŚCIE
+ŻYCZEŃ.
+SPRZEDAWANY PO 25 JEDNOSTEK.
+@@ ITEM17_TXT
+TEXT_IMAGE ICON22_PIC 0 5
+
+TEXT_COLOR 80
+TEXT_POS 52 15
+SKANER JONOWY
+
+TEXT_COLOR 38
+TEXT_POS 52 23
+SPECJALNY
+
+TEXT_COLOR 67
+TEXT_POS 0 36
+SKANER PRZESZUKUJE OKOLICĘ
+W POSZUKIWANIU EMISJI
+SILNIKÓW WIĘKSZYCH MASZYN.
+PO WYKRYCIU NAMIERZA CEL
+I POKAZUJE WSKAŹNIK
+USZKODZEŃ TEGO STATKU.
+@@ HAR1_TXT
+TEXT_IMAGE HAROLD_PIC 104 3
+
+TEXT_COLOR 80
+TEXT_POS 10 15
+ŚMIERCIONOŚNY
+TEXT_POS 24 25
+BAZAR HARROLDA
+
+TEXT_COLOR 67
+TEXT_POS 0 45
+WITAJ W JEDYNYM
+AUTOMATYCZNYM
+SKLEPIE Z WSZYSTKIM.
+ZAKUPY ZAŁADUJEMY
+I ZAMONTUJEMY ZA DARMO.
+SPRAWDŹ DZISIEJSZE OKAZJE!
+@@ HAR2_TXT
+TEXT_COLOR 80
+TEXT_POS 37 15
+TRYB ZAKUPU..
+
+TEXT_COLOR 67
+TEXT_POS 0 27
+CENY NIE PODLEGAJĄ NEGOCJACJI
+I ZALEŻĄ OD DOSTĘPNOŚCI
+TOWARU. KWOTA ZAKUPU ZOSTANIE
+AUTOMATYCZNIE POBRANA
+Z TWOJEGO KONTA.
+@@ HAR3_TXT
+TEXT_COLOR 80
+TEXT_POS 33 15
+TRYB SPRZEDAŻY..
+
+TEXT_COLOR 67
+TEXT_POS 3 37
+SPRAWDZAM EKWIPUNEK PILOTA...
+PRZEDMIOTY NA SPRZEDAŻ
+TRAFIĄ DO BAZY DANYCH
+Z AKTUALNYMI CENAMI.
+LICZĄ SIĘ TYLKO RZECZY,
+KTÓRE DA SIĘ ODSPRZEDAĆ.
+@@ HAR4_TXT
+TEXT_COLOR 80
+TEXT_POS 60 15
+PRZYKRO..
+
+TEXT_COLOR 39
+TEXT_POS 10 37
+WYGLĄDA NA TO, ŻE DOTARŁEŚ
+DO GRANIC SWOICH FINANSÓW.
+TYLKO ZA GOTÓWKĘ. DZIĘKUJEMY
+ZA WYBÓR ŚMIERCIONOŚNEGO
+BAZARU HARROLDA, SKLEPU
+DLA WYBREDNYCH NAJEMNIKÓW.
+@@ HAR5_TXT
+TEXT_COLOR 80
+TEXT_POS 28 15
+TRYB SPRZEDAŻY..
+
+TEXT_COLOR 67
+TEXT_POS 5 37
+SPRAWDZAM EKWIPUNEK PILOTA...
+WYGLĄDA NA TO, ŻE NIE MASZ
+NICZEGO DO ODSPRZEDANIA.
+ZAPRASZAMY PONOWNIE
+W INNYM TERMINIE.
+@@ HAR7_TXT
+TEXT_COLOR 80
+TEXT_POS 62 15
+UWAGA!
+
+TEXT_COLOR 39
+TEXT_POS 7 37
+OSIĄGNĄŁEŚ MAKSYMALNY
+UDŹWIG SWOJEGO MYŚLIWCA.
+NIE MOŻEMY DODAĆ KOLEJNEGO
+PRZEDMIOTU BEZ PRZEKROCZENIA
+NORM WYTRZYMAŁOŚCI
+KONSTRUKCJI PODANYCH
+PRZEZ PRODUCENTA.

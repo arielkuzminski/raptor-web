@@ -97,6 +97,7 @@ set(SOURCE_FILES
     src/ptrapi.cpp                           src/ptrapi.h
     src/loadsave.cpp                         src/loadsave.h
     src/enemy.cpp                            src/enemy.h
+    src/lang.cpp                             src/lang.h
     src/mpuwinmm.cpp
     src/mputsf.cpp
     src/mpualsa.cpp

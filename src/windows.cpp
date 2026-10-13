@@ -1,6 +1,7 @@
 #include <string.h>
 #include <stdio.h>
 #include "common.h"
+#include "lang.h"
 #include "glbapi.h"
 #include "gfxapi.h"
 #include "swdapi.h"
@@ -1130,7 +1131,7 @@ WIN_Hangar(
             case SC_S:
             case SC_F2:
                 pos = 3;
-                sprintf(temp, "Save %s - %s ?", plr.name, plr.callsign);
+                sprintf(temp, LANG_Str("Save %s - %s ?"), plr.name, plr.callsign);
                 if (WIN_AskBool(temp))
                     RAP_SavePlayer();
                 break;
@@ -1275,7 +1276,7 @@ keyboard_part:
                         while (IMS_IsAck())
                         {
                         }
-                        sprintf(temp, "Save %s - %s ?", plr.name, plr.callsign);
+                        sprintf(temp, LANG_Str("Save %s - %s ?"), plr.name, plr.callsign);
                         if (WIN_AskBool(temp))
                             RAP_SavePlayer();
                         while (IMS_IsAck())
@@ -1340,19 +1341,19 @@ WIN_LoadComp(
     window = SWD_InitMasterWindow(FILE140_LOADCOMP_SWD);
     SWD_GetFieldXYL(window, LCOMP_LEVEL, &g_x, &g_y, &g_lx, &g_ly);
     
-    sprintf(temp, "WAVE %d", game_wave[cur_game]);
+    sprintf(temp, LANG_Str("WAVE %d"), game_wave[cur_game]);
     SWD_SetFieldText(window, LCOMP_WAVE, temp);
     
     SWD_SetFieldText(window, LCOMP_SECTOR, sect[cur_game]);
     
     if (diff_wrap[plr.diff[cur_game]] - 1 == game_wave[cur_game])
     {
-        sprintf(temp, "FINAL WAVE %d", game_wave[cur_game] + 1);
+        sprintf(temp, LANG_Str("FINAL WAVE %d"), game_wave[cur_game] + 1);
         SWD_SetFieldText(window, LCOMP_WAVE, temp);
     }
     else
     {
-        sprintf(temp, "WAVE %d", game_wave[cur_game] + 1);
+        sprintf(temp, LANG_Str("WAVE %d"), game_wave[cur_game] + 1);
         SWD_SetFieldText(window, LCOMP_WAVE, temp);
     }
     

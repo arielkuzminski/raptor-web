@@ -12,6 +12,7 @@
 #include "joyapi.h"
 #include "input.h"
 #include "entypes.h"
+#include "lang.h"
 
 int g_joy_ascii;
 unsigned int fi_joy_count;
@@ -81,6 +82,7 @@ int textcmd_x2, textcmd_y2;
 int textcolor;
 int textcmd_line;
 char textfill[MAX_TEXT_LEN];
+static const char *textend;      // end of the text item being parsed
 
 /*------------------------------------------------------------------------
    SWD_ShadeButton () -
@@ -129,27 +131,37 @@ SWD_GetLine(
     int curpos, loop, item, x, y, col;
     char *pic;
     GFX_PIC* h;
-    
+
     if (inmem)
         text = inmem;
-    
+
     textcmd_flag = 0;
     curpos = 0;
-    
-    memcpy(temp, text, MAX_TEXT_LEN);
-    
+
+    // Bytes >= 128 are national characters ( lang.cpp ), not line breaks,
+    // so compare as unsigned and never read past the end of the item.
+#define TEXT_AT(n)   (text + (n) < textend ? (unsigned char)text[n] : 0)
+#define IS_TEXT(n)   (TEXT_AT(n) > 31)
+#define IS_BREAK(n)  (text + (n) < textend && TEXT_AT(n) <= 31)
+
+    memset(temp, 0, sizeof(temp));
+    memcpy(temp, text, textend - text < MAX_TEXT_LEN ? textend - text : MAX_TEXT_LEN);
+
     cmd = strtok(temp, cbrks);
+
+    if (!cmd)
+        cmd = "";
     
     for (loop = 0; loop < T_LASTCMD - 1; loop++)
     {
         if (!strcmp(cmd, tcmds[loop]))
         {
             textcmd_flag = 1;
-            
-            while (text[curpos] > 31)
+
+            while (IS_TEXT(curpos))
                 curpos++;
-            
-            while (text[curpos] <= 31)
+
+            while (IS_BREAK(curpos))
                 curpos++;
             
             text += curpos;
@@ -231,18 +243,26 @@ SWD_GetLine(
         }
     }
     
-    while (text[curpos] > 31)
+    while (IS_TEXT(curpos))
         curpos++;
-    
-    memcpy(textfill, text, curpos);
-    textfill[curpos] = 0;
-    
-    while (text[curpos] <= 31)
+
+    loop = curpos < MAX_TEXT_LEN - 1 ? curpos : MAX_TEXT_LEN - 1;
+    memcpy(textfill, text, loop);
+    textfill[loop] = 0;
+
+    while (IS_BREAK(curpos))
         curpos++;
-    
+
     text += curpos;
-    
+
+    // nothing left: report the rest of the item as consumed
+    if (text >= textend)
+        curpos += 1;
+
     return curpos;
+#undef TEXT_AT
+#undef IS_TEXT
+#undef IS_BREAK
 }
 
 /***************************************************************************
@@ -280,7 +300,8 @@ SWD_FillText(
     textcmd_line = x;
     
     sizerec = GLB_ItemSize(item);
-    
+    textend = text + sizerec;
+
     len = SWD_GetLine(text);
     
     while (1)
@@ -2648,11 +2669,12 @@ SWD_SetFieldText(
     curfld = (SFIELD*)((char*)curwin + LE_LONG(curwin->fldofs)) + field_id;
     
     text = (char*)curfld + LE_LONG(curfld->txtoff);
-    
+
     if (in_text)
     {
+        in_text = LANG_Str(in_text);
         text[LE_LONG(curfld->maxchars) - 1] = 0;
-        memcpy(text, in_text, LE_LONG(curfld->maxchars) - 1);             
+        strncpy(text, in_text, LE_LONG(curfld->maxchars) - 1);
     }
     else
         *text = 0;

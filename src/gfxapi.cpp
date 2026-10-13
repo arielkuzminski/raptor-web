@@ -5,6 +5,7 @@
 #include "gfxapi.h"
 #include "i_video.h"
 #include "entypes.h"
+#include "lang.h"
 
 char *displaybuffer;
 char *displayscreen;
@@ -1520,10 +1521,21 @@ GFX_StrPixelLen(
 {
     int loop;
     int outlen = 0;
-    
+    unsigned char ch;
+    const LANG_GLYPH *glyph;
+
     for (loop = 0; loop < maxloop; loop++)
     {
-        outlen += infont->width[instr[loop]] + fontspacing;
+        ch = (unsigned char)instr[loop];
+
+        if (ch >= 128)
+        {
+            if ((glyph = LANG_Glyph(infont, ch)) != NULL)
+                outlen += glyph->width + fontspacing;
+            continue;
+        }
+
+        outlen += infont->width[ch] + fontspacing;
     }
     
     return outlen;
@@ -1565,6 +1577,33 @@ GFX_PutChar(
     return 0;
 }
 
+/*--------------------------------------------------------------------------
+   GFX_PutLangChar () - Draws a composed national character and clips
+ --------------------------------------------------------------------------*/
+static int
+GFX_PutLangChar(
+    int x,                  // INPUT : x position
+    int y,                  // INPUT : y position ( top of text line )
+    const LANG_GLYPH *glyph,// INPUT : composed glyph
+    int basecolor           // INPUT : font base color
+)
+{
+    char *cdata = glyph->data;
+    int lx = glyph->width;
+    int ly = glyph->height;
+
+    y += glyph->yoff;
+
+    if (GFX_ClipLines(&cdata, &x, &y, &lx, &ly))
+    {
+        GFX_MarkUpdate(x, y, lx, ly);
+        GFX_DrawChar(displaybuffer + x + ylookup[y], cdata, lx, ly, glyph->width - lx, basecolor);
+        return lx;
+    }
+
+    return 0;
+}
+
 /***************************************************************************
    GFX_Print () - prints a string using specified font with basecolor
  ***************************************************************************/
@@ -1588,7 +1627,19 @@ GFX_Print(
     {
         while ((ch = *str++) != 0)
         {
-            if (LE_SHORT(font->charofs[ch]) == (short)-1) 
+            if (ch >= 128)
+            {
+                const LANG_GLYPH *glyph = LANG_Glyph(font, ch);
+
+                if (glyph)
+                {
+                    lx += GFX_PutLangChar(x, y, glyph, basecolor) + fontspacing;
+                    x += glyph->width + fontspacing;
+                }
+                continue;
+            }
+
+            if (LE_SHORT(font->charofs[ch]) == (short)-1)
                 continue;
             cwidth = GFX_PutChar(x, y, ch, font, basecolor);
             lx += (cwidth + fontspacing);

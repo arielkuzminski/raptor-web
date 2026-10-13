@@ -33,6 +33,7 @@
 #include "i_lastscr.h"
 #include "fileids.h"
 #include "entypes.h"
+#include "lang.h"
 
 #ifdef BUILD_WITH_SETUP
 #include "setup/se_main.h"
@@ -1286,7 +1287,7 @@ main(
 
     RAP_InitLoadSave();
     
-#if _WIN32 || __linux__ || __APPLE__
+#if _WIN32 || __linux__ || __APPLE__ || __EMSCRIPTEN__
     if (access(RAP_SetupFilename(), 0))
     {
         INI_InitPreference(RAP_SetupFilename());
@@ -1430,6 +1431,17 @@ main(
 
     if (!INI_InitPreference(RAP_SetupFilename()))
         EXIT_Error("SETUP Error");
+
+    // Language: "-lang xx" on the command line ( saved ) or [Setup] Language
+    for (loop = 1; loop < argc - 1; loop++)
+    {
+        if (!strcmp(argv[loop], "-lang"))
+            INI_PutPreference("Setup", "Language", argv[loop + 1]);
+    }
+    {
+        char langbuf[16];
+        LANG_Init(INI_GetPreference("Setup", "Language", langbuf, sizeof(langbuf), "en"));
+    }
 
     fflush(stdout);
     KBD_Install();

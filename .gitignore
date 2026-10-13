@@ -6,3 +6,5 @@ Makefile
 build
 .vscode
 **/.DS_Store
+# Web build output (GLB data must never be committed)
+web/dist/

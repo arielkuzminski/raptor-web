@@ -278,8 +278,10 @@ Replay(
     switch (rec.op)
     {
     case IOP_SPRITE:
-        if (!P3D_Enabled() || rec.kind == IK_PLAYER)
-            GFX_PutSprite(rec.pic, x, y);      /* the ship stays flat: it is at the camera */
+        /* flat: the ship ( at the camera ), HUD-like pop-ups ( money ) and pickups */
+        if (!P3D_Enabled() || rec.kind == IK_PLAYER || rec.kind == IK_BONUS
+            || (rec.kind == IK_ANIM && !rec.ground))
+            GFX_PutSprite(rec.pic, x, y);
         else if (rec.ground)
             P3D_DrawGround(rec.pic, x, y);
         else

@@ -1,24 +1,31 @@
 /***************************************************************************
-   PSEUDO3D - Mode 7 style ground plane ( alpha )
-   See pseudo3d.h. Camera looks straight ahead; one row of the playfield
-   corresponds to a depth z = 1 / ( y - horizon ), the bottom row is the
-   nearest. Horizontal scale grows with depth, so distant rows are wider in
-   source and look compressed on screen.
+   PSEUDO3D - ground plane from the map ( alpha, E1 )
+
+   The floor is cast from the level's tiles, not from the finished screen:
+   every playfield pixel below the horizon looks up a point of the map
+   ( the ground behind and ahead of the ship ) through a camera with
+   depth D = Dref^2 / ( y - horizon ). Near the ship the map is shown at
+   the same scale as the flat game, far away it is compressed.
+   Sprites are not drawn yet ( E2 ), so this step shows only the ground.
  ***************************************************************************/
 #include <string.h>
 #include <math.h>
 #include "pseudo3d.h"
+#include "tile.h"
 
-#define P3D_STRIDE   320         /* row length of the 320x200 screen */
-#define P3D_X0       16          /* first playfield column (MAP_LEFT) */
-#define P3D_W        288         /* playfield width */
-#define P3D_H        200         /* playfield height */
-#define P3D_HORIZON  30          /* rows 0..HORIZON are sky */
-#define P3D_SKY      0           /* palette index of the sky */
-#define P3D_MAX_HSCALE 4.0       /* limit horizontal stretch near the horizon */
+#define P3D_STRIDE    320        /* row length of the 320x200 screen */
+#define P3D_X0        16         /* first playfield column (MAP_LEFT) */
+#define P3D_W         288        /* playfield width = 9 tiles of 32 px */
+#define P3D_H         200        /* screen rows */
+#define P3D_HORIZON   40         /* screen rows 0..HORIZON are sky */
+#define P3D_SHIP_Y    170        /* screen row where the map is 1:1 with the flat game */
+#define P3D_SKY       0          /* palette index of the sky */
+#define P3D_WIN_ROWS  64         /* map rows kept in the world window */
+#define P3D_WIN_BACK  40         /* window starts this many rows before the ship */
+#define P3D_LINES     (P3D_WIN_ROWS * 32)
 
 static int p3d_enabled;
-static char p3d_src[P3D_W * P3D_H];
+static char p3d_world[P3D_LINES * P3D_W];
 
 void
 P3D_Init(
@@ -37,52 +44,54 @@ P3D_Enabled(
 }
 
 void
-P3D_Warp(
-    char *screen
+P3D_Floor(
+    char *screen,
+    double shift
 )
 {
-    const double cx = (P3D_W - 1) / 2.0;
-    int x, y;
+    int yoff = 0;
+    int wrow0, sx, sy, cur_base;
+    double dref = P3D_SHIP_Y - P3D_HORIZON;
+    double mref, cx = (P3D_W - 1) / 2.0;
 
-    for (y = 0; y < P3D_H; y++)
-        memcpy(p3d_src + y * P3D_W, screen + y * P3D_STRIDE + P3D_X0, P3D_W);
+    TILE_GetScroll(&cur_base, &yoff);
 
-    for (y = 0; y < P3D_H; y++)
+    wrow0 = cur_base - P3D_WIN_BACK;
+    TILE_WorldRows(wrow0, P3D_WIN_ROWS, p3d_world);
+
+    /* map pixel shown at the ship row, matching the flat playfield scroll */
+    mref = (P3D_SHIP_Y - yoff) + cur_base * 32.0 + shift;
+
+    for (sy = 0; sy < P3D_H; sy++)
     {
-        char *dst = screen + y * P3D_STRIDE + P3D_X0;
-        double t, sy, hscale;
-        int row;
+        char *dst = screen + sy * P3D_STRIDE + P3D_X0;
 
-        if (y <= P3D_HORIZON)
+        if (sy <= P3D_HORIZON)
         {
             memset(dst, P3D_SKY, P3D_W);
             continue;
         }
 
-        /* t = 0 at the horizon, 1 at the bottom row; source row = 2H*t/(1+t):
-           the bottom keeps its size, the rows towards the horizon shrink */
-        t = (double)(y - P3D_HORIZON) / (P3D_H - 1 - P3D_HORIZON);
-        sy = (P3D_H - 1) * 2.0 * t / (1.0 + t);
-        hscale = 1.0 / t;
-        if (hscale > P3D_MAX_HSCALE)
-            hscale = P3D_MAX_HSCALE;
-
-        if (sy < 0)
-            sy = 0;
-        if (sy > P3D_H - 1)
-            sy = P3D_H - 1;
-        row = (int)(sy + 0.5);
-
-        for (x = 0; x < P3D_W; x++)
         {
-            int sx = (int)floor(cx + (x - cx) * hscale + 0.5);
+            double d = dref * dref / (sy - P3D_HORIZON);
+            double msrc = mref + dref - d;
+            double hs = dref / (sy - P3D_HORIZON);
+            int line = (int)floor(msrc) - wrow0 * 32;
 
-            if (sx < 0)
-                sx = 0;
-            if (sx > P3D_W - 1)
-                sx = P3D_W - 1;
+            for (sx = 0; sx < P3D_W; sx++)
+            {
+                int col = (int)floor(cx + (sx - cx) * hs + 0.5);
 
-            dst[x] = p3d_src[row * P3D_W + sx];
+                /* wrap across the 288 px map width: far rows need more than the level has */
+                col %= P3D_W;
+                if (col < 0)
+                    col += P3D_W;
+
+                if (line < 0 || line >= P3D_LINES)
+                    dst[sx] = P3D_SKY;
+                else
+                    dst[sx] = p3d_world[line * P3D_W + col];
+            }
         }
     }
 }

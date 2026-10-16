@@ -355,7 +355,7 @@ INTERP_Render(
         {
             // playfield is complete here ( displaybuffer == screen ): tilt it, HUD stays flat
             if (P3D_Enabled())
-                P3D_Warp(screen);
+                P3D_Floor(screen, shift);
 
             memset(overlay8, 0, sizeof(overlay8));
             displaybuffer = overlay8;

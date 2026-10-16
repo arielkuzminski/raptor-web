@@ -579,3 +579,55 @@ TILE_Explode(
     }
 }
 
+/***************************************************************************
+   TILE_GetScroll() - Current scroll state for the pseudo-3D floor
+   *base = first map row on screen, *yoff = screen y of the tile grid
+ ***************************************************************************/
+void
+TILE_GetScroll(
+    int *base,
+    int *yoff
+)
+{
+    *base = tilepos / MAP_COLS;
+    *yoff = tileyoff;
+}
+
+/***************************************************************************
+   TILE_WorldRows() - Copies map rows [r0, r0 + nrows) into dst as 8-bit
+                      lines, MAP_COLS * MAP_BLOCKSIZE pixels wide
+                      ( no scrolling, no side effects; rows outside the
+                      level are left black )
+ ***************************************************************************/
+void
+TILE_WorldRows(
+    int r0,
+    int nrows,
+    char *dst
+)
+{
+    const int width = MAP_COLS * MAP_BLOCKSIZE;
+    int r, c, line;
+
+    for (r = 0; r < nrows; r++)
+    {
+        int row = r0 + r;
+
+        if (row < 0 || row >= MAP_ROWS)
+        {
+            memset(dst + r * MAP_BLOCKSIZE * width, 0, MAP_BLOCKSIZE * width);
+            continue;
+        }
+
+        for (c = 0; c < MAP_COLS; c++)
+        {
+            int spot = row * MAP_COLS + c;
+            char *src = (char*)GLB_GetItem(titems[spot]) + 20;
+
+            for (line = 0; line < MAP_BLOCKSIZE; line++)
+                memcpy(dst + (r * MAP_BLOCKSIZE + line) * width + c * MAP_BLOCKSIZE,
+                       src + line * MAP_BLOCKSIZE, MAP_BLOCKSIZE);
+        }
+    }
+}
+

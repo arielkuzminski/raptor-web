@@ -257,7 +257,7 @@
     ArrowUp: ["ArrowUp", 38], ArrowDown: ["ArrowDown", 40],
     ArrowLeft: ["ArrowLeft", 37], ArrowRight: ["ArrowRight", 39],
     ControlLeft: ["Control", 17], AltLeft: ["Alt", 18], Space: [" ", 32], ShiftRight: ["Shift", 16],
-    KeyP: ["p", 80], Escape: ["Escape", 27], Enter: ["Enter", 13],
+    KeyP: ["p", 80], KeyD: ["d", 68], Escape: ["Escape", 27], Enter: ["Enter", 13],
   };
   const held = new Map();              // code -> how many touch inputs hold it
   function sendKey(type, code) {
@@ -367,8 +367,10 @@
     }
     // "classic" = original game loop: -interp 0 (passed every time, so it is not kept in SETUP.INI)
     const classic = $("fps").value === "classic";
+    // ?pseudo3d=1 turns on the pseudo-3D ground plane ( alpha, for testing )
+    const p3d = new URLSearchParams(location.search).get("pseudo3d") === "1";
     Module.callMain(["-lang", $("lang").value, "-interp", classic ? "0" : "1",
-      "-fps", classic ? "60" : $("fps").value]);
+      "-fps", classic ? "60" : $("fps").value, "-pseudo3d", p3d ? "1" : "0"]);
     // first resize once SDL has created the window
     setTimeout(webResize, 800);
   });

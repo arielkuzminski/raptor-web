@@ -40,3 +40,6 @@ void TILE_ClipDraw(void);
 void TILE_ShakeScreen(void);
 void TILE_DisplayScreen(void);
 
+void TILE_GetScroll(int *base, int *yoff);
+void TILE_WorldRows(int r0, int nrows, char *dst);
+

@@ -26,6 +26,9 @@
 
 /* fog = repeated use of the game's DARK shade table: level 0 = none, 3 = darkest */
 #define P3D_FOG_LEVELS 4
+/* how dark the fog gets: levels added at the horizon and at the outer edge */
+#define P3D_FOG_DEPTH_MAX 2.0
+#define P3D_FOG_SIDE_MAX  0.8
 
 extern char *dtable;
 
@@ -123,7 +126,7 @@ P3D_Floor(
                 /* side fog: fades in over the outer half of the width */
                 double edge = fabs(sx - cx) / cx;
                 double side_f = edge > 0.5 ? (edge - 0.5) * 2.0 : 0.0;
-                double level = depth_f * (P3D_FOG_LEVELS - 1) + side_f * 1.5;
+                double level = depth_f * P3D_FOG_DEPTH_MAX + side_f * P3D_FOG_SIDE_MAX;
                 int base, lvl, v;
 
                 /* ordered dither (4x4 Bayer) between two levels: a soft fade, no bands */

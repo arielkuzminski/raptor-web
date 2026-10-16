@@ -69,6 +69,17 @@ Never commit game data.
 
 Pushes to the `web` branch are deployed to GitHub Pages by `.github/workflows/pages.yml`.
 
+## Bonus: Windows debug build
+
+Curious about the native version? There is a 64-bit Windows debug build you can try:
+
+1. Download `raptor-windows-0.8.3-debug.zip` from the [release page](https://github.com/arielkuzminski/raptor-web/releases/tag/windows-debug-v0.8.3).
+2. Unzip it and copy your own `FILE0000.GLB` to `FILE0004.GLB` next to `raptor.exe`.
+3. Run `raptor.exe`.
+
+The zip does not include game data. This is a debug build, so it has extra debugging options (for example a god-mode cheat).
+To build it yourself, see `win-debug/` in the `windows-debug` branch.
+
 ## Native build
 
 The native (Windows, Linux, macOS, Android) build is unchanged from the original project.

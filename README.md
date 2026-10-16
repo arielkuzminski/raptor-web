@@ -69,20 +69,26 @@ Never commit game data.
 
 Pushes to the `web` branch are deployed to GitHub Pages by `.github/workflows/pages.yml`.
 
+## Windows (64-bit) version
+
+Prefer to play natively? Download `raptor-windows-0.8.3.zip` from the [latest release](https://github.com/arielkuzminski/raptor-web/releases/tag/windows-v0.8.3):
+
+1. Unzip it and copy your own `FILE0000.GLB` to `FILE0004.GLB` next to `raptor.exe`.
+2. Run `raptor.exe`.
+
+The zip does not include game data. Frame rate (Classic 23 FPS, 60, 120, 144 or match monitor) and language (English or Polski)
+are set in **Setup > Additional Features > Video**. The settings are saved in `%APPDATA%\Raptor\SETUP.INI`.
+You can also start the game with options, for example `raptor.exe -lang pl -fps 144`.
+
 ## Bonus: Windows debug build
 
-Curious about the native version? There is a 64-bit Windows debug build you can try:
-
-1. Download `raptor-windows-0.8.3-debug.zip` from the [release page](https://github.com/arielkuzminski/raptor-web/releases/tag/windows-debug-v0.8.3).
-2. Unzip it and copy your own `FILE0000.GLB` to `FILE0004.GLB` next to `raptor.exe`.
-3. Run `raptor.exe`.
-
-The zip does not include game data. This is a debug build, so it has extra debugging options (for example a god-mode cheat).
+Curious about the debugging options? There is also a debug build with extra options (for example a god-mode cheat):
+[`raptor-windows-0.8.3-debug.zip`](https://github.com/arielkuzminski/raptor-web/releases/tag/windows-debug-v0.8.3).
 To build it yourself, see `win-debug/` in the `windows-debug` branch.
 
-## Native build
+## Other native builds
 
-The native (Windows, Linux, macOS, Android) build is unchanged from the original project.
+The other native builds (Linux, macOS, Android) are unchanged from the original project.
 See the [original README](https://github.com/skynettx/raptor#readme) for instructions.
 
 ## Credits

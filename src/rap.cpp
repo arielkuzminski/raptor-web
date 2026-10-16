@@ -1309,7 +1309,11 @@ main(
     StartScreen();
 #endif // BUILD_WITH_SETUP
 
+#ifdef RAPTOR_CHEATS
     var1 = getenv("S_HOST");
+#else
+    var1 = NULL;
+#endif
 
     InitScreen();
 
@@ -1333,10 +1337,10 @@ main(
 
     godmode = 0;
 
+#ifdef RAPTOR_CHEATS
     if (var1 != NULL && !strcmp(var1, gdmodestr))
         godmode = 1;
-    else
-        godmode = 0;
+#endif
 
     if (argv[1])
     {
@@ -1357,8 +1361,10 @@ main(
         }
     }
 
+#ifdef RAPTOR_CHEATS
     if (godmode)
         printf("GOD mode enabled\n");
+#endif
     
     cur_diff = 0;
 

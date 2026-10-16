@@ -8,3 +8,7 @@ build
 **/.DS_Store
 # Web build output (GLB data must never be committed)
 web/dist/
+
+# Local Windows debug build output (contains copied game data - never commit)
+build-win-debug/
+build-win-release/

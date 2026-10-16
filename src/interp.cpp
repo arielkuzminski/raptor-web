@@ -278,8 +278,9 @@ Replay(
     switch (rec.op)
     {
     case IOP_SPRITE:
-        /* flat: the ship ( at the camera ), HUD-like pop-ups ( money ) and pickups */
-        if (!P3D_Enabled() || rec.overlay || rec.kind == IK_PLAYER || rec.kind == IK_BONUS
+        /* flat: HUD overlay, pop-ups ( money ) and pickups; the player's ship is
+           projected like a flying object, lifted above the floor */
+        if (!P3D_Enabled() || rec.overlay || rec.kind == IK_BONUS
             || (rec.kind == IK_ANIM && !rec.ground))
             GFX_PutSprite(rec.pic, x, y);
         else if (rec.ground)

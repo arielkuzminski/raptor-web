@@ -11,3 +11,4 @@ web/dist/
 
 # Local Windows debug build output (contains copied game data - never commit)
 build-win-debug/
+build-win-release/

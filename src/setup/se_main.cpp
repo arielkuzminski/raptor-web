@@ -43,6 +43,8 @@ int soundfxcard;
 static int startscreenupdate;
 static int fullscreen, aspect_ratio, txt_fullscreen, haptic, joy_ipt_MenuNew, sys_midi, winmm_mpu_device, core_dls_synth, core_midi_port, alsaclient, alsaport, setup;
 int keymoveup, keymovedown, keymoveleft, keymoveright, keyfire, keyspecial, keymega;
+static int fps_choice;   // 0 = classic 23 fps, 1 = 60, 2 = 120, 3 = 144, 4 = match monitor
+static int lang_choice;  // 0 = en, 1 = pl
 static char soundfont[128];
 static char* sf;
 
@@ -199,6 +201,25 @@ void GetSetupSettings(void)
 	alsaport = SE_INI_GetPreferenceLong("Setup", "alsa_output_port", 0);
 	sf = (char*)SE_INI_GetPreference("Setup", "SoundFont", soundfont, 127, "SoundFont.sf2");
 	setup = SE_INI_GetPreferenceLong("Setup", "setup_menu", 1);
+
+	{
+		char langbuf[16];
+		int interp = SE_INI_GetPreferenceLong("Video", "interp", 1);
+		int maxfps = SE_INI_GetPreferenceLong("Video", "max_fps", 60);
+		const char* lang = SE_INI_GetPreference("Setup", "Language", langbuf, sizeof(langbuf), "en");
+
+		fps_choice = 1;
+		if (!interp)
+			fps_choice = 0;
+		else if (maxfps == 120)
+			fps_choice = 2;
+		else if (maxfps == 144)
+			fps_choice = 3;
+		else if (maxfps == 0)
+			fps_choice = 4;
+
+		lang_choice = strcmp(lang, "pl") == 0;
+	}
 
 	savemousebfire = mousebfire;
 	savemousebchweapon = mousebchweapon;
@@ -461,6 +482,12 @@ void SaveSettings(TXT_UNCAST_ARG(widget), void* user_data)
 	SE_INI_PutPreferenceLong("Video", "fullscreen", fullscreen);                          //Save Additional Feature fullscreen to SETUP.INI
 	SE_INI_PutPreferenceLong("Video", "aspect_ratio_correct", aspect_ratio);              //Save Additional Feature aspect_ratio_correct to SETUP.INI
 	SE_INI_PutPreferenceLong("Video", "txt_fullscreen", txt_fullscreen);                  //Save Additional Feature txt_fullscreen to SETUP.INI
+	{
+		static const int fps_values[] = { 60, 60, 120, 144, 0 };
+		SE_INI_PutPreferenceLong("Video", "interp", fps_choice != 0);
+		SE_INI_PutPreferenceLong("Video", "max_fps", fps_values[fps_choice]);
+		SE_INI_PutPreference("Setup", "Language", lang_choice ? "pl" : "en");
+	}
 }
 /////////////////////////////////////////////////////////Info Window/////////////////////////////////////////////////////////
 void InfoWindow(TXT_UNCAST_ARG(widget), void* user_data)
@@ -496,6 +523,8 @@ void AdditionalFeatures(TXT_UNCAST_ARG(widget), void* user_data)
 	txt_checkbox_t* fullscreenbox;
 	txt_checkbox_t* aspectratiobox;
 	txt_checkbox_t* textmodefullbox;
+	txt_dropdown_list_t* fpsbox;
+	txt_dropdown_list_t* langbox;
 
 	txt_checkbox_t* systemmidibox;
 	txt_inputbox_t* winmmmpudevicebox;
@@ -511,6 +540,13 @@ void AdditionalFeatures(TXT_UNCAST_ARG(widget), void* user_data)
 	fullscreenbox = TXT_NewCheckBox("Fullscreen", &fullscreen);
 	aspectratiobox = TXT_NewCheckBox("Aspect Ratio", &aspect_ratio);
 	textmodefullbox = TXT_NewCheckBox("Text Mode Fullscreen", &txt_fullscreen);
+
+	{
+		static const char* fps_labels[] = { "Classic (23 FPS, original)", "60 FPS", "120 FPS", "144 FPS", "Match monitor" };
+		static const char* lang_labels[] = { "English", "Polski" };
+		fpsbox = TXT_NewDropdownList(&fps_choice, fps_labels, 5);
+		langbox = TXT_NewDropdownList(&lang_choice, lang_labels, 2);
+	}
 
 	systemmidibox = TXT_NewCheckBox("System MIDI", &sys_midi);
 	winmmmpudevicebox = TXT_NewIntInputBox(&winmm_mpu_device, 3);
@@ -535,11 +571,15 @@ void AdditionalFeatures(TXT_UNCAST_ARG(widget), void* user_data)
 	TXT_AddWidgets(window, TXT_NewSeparator("Video"),
 		fullscreenbox,
 		aspectratiobox,
-		textmodefullbox, NULL);
+		textmodefullbox,
+		TXT_NewHorizBox(TXT_NewLabel("Frame Rate: "), fpsbox, NULL),
+		TXT_NewHorizBox(TXT_NewLabel("Language:   "), langbox, NULL), NULL);
 
 	TXT_SetHelpLabel(fullscreenbox, "Select Fullscreen Mode On / Off");
 	TXT_SetHelpLabel(aspectratiobox, "Select Aspect Ratio Correction On / Off");
 	TXT_SetHelpLabel(textmodefullbox, "Select Text Mode Fullscreen On / Off");
+	TXT_SetHelpLabel(fpsbox, "Select the frame rate: Classic is the original 23 FPS");
+	TXT_SetHelpLabel(langbox, "Select the game language");
 
 	TXT_AddWidgets(window, TXT_NewSeparator("Audio"),
 		systemmidibox, TXT_NewConditional(&sys_midi, 1,

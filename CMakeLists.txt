@@ -15,6 +15,10 @@ if(NOT DEFINED CMAKE_BUILD_TYPE)
 endif()
 
 option(BUILD_WITH_SETUP "Build project with setup" ON)
+option(RAPTOR_CHEATS "Enable debug cheats (S_HOST=CASTLE god mode). Off in release builds" OFF)
+if(RAPTOR_CHEATS)
+    add_compile_definitions(RAPTOR_CHEATS=1)
+endif()
 
 if(ANDROID)
     include(FetchContent)

@@ -13,7 +13,7 @@ SDL_BIN="$ROOT/include/SDL2-devel-2.28.2-mingw/SDL2-2.28.2/x86_64-w64-mingw32/bi
 
 cmake -S "$ROOT" -B "$BUILD" \
     -DCMAKE_TOOLCHAIN_FILE="$ROOT/win-debug/mingw-w64.cmake" \
-    -DCMAKE_BUILD_TYPE=Release -DBUILD_WITH_SETUP=ON
+    -DCMAKE_BUILD_TYPE=Release -DBUILD_WITH_SETUP=ON -DRAPTOR_CHEATS=ON
 cmake --build "$BUILD" -j"$(nproc)"
 
 mkdir -p "$PLAY"

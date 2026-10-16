@@ -348,15 +348,15 @@ INTERP_Render(
     if (shift >= 1)
         shift = 1;
 
+    // pseudo-3D: the ground is cast from the map first; the sprites are then drawn over it
+    if (P3D_Enabled())
+        P3D_Floor(screen, shift);
+
     for (pass = 0; pass < 3; pass++)
     {
         // pass 0: playfield, pass 1 + 2: HUD over 0 and over 255 ( drawn pixels = mask )
         if (pass == 1)
         {
-            // playfield is complete here ( displaybuffer == screen ): tilt it, HUD stays flat
-            if (P3D_Enabled())
-                P3D_Floor(screen, shift);
-
             memset(overlay8, 0, sizeof(overlay8));
             displaybuffer = overlay8;
         }
@@ -372,6 +372,10 @@ INTERP_Render(
             int x = rec.v[0], y = rec.v[1], x2 = rec.v[2], y2 = rec.v[3];
 
             if ((pass == 0) == (rec.overlay != 0))
+                continue;
+
+            // in pseudo-3D the map tiles are replaced by the floor
+            if (pass == 0 && rec.op == IOP_TILE && P3D_Enabled())
                 continue;
 
             if (pass == 0)

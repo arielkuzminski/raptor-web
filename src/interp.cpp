@@ -278,10 +278,12 @@ Replay(
     switch (rec.op)
     {
     case IOP_SPRITE:
-        if (rec.ground && P3D_Enabled())
+        if (!P3D_Enabled() || rec.kind == IK_PLAYER)
+            GFX_PutSprite(rec.pic, x, y);      /* the ship stays flat: it is at the camera */
+        else if (rec.ground)
             P3D_DrawGround(rec.pic, x, y);
         else
-            GFX_PutSprite(rec.pic, x, y);
+            P3D_DrawAir(rec.pic, x, y);
         break;
     case IOP_SHADESHAPE:
         GFX_ShadeShape(rec.v[2], rec.pic, x, y);

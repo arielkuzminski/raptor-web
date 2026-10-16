@@ -166,14 +166,18 @@ P3D_Floor(
 #define P3D_SPR_OX  32           /* scratch position: clear of the screen edges */
 #define P3D_SPR_OY  8
 #define P3D_SCALE_MAX 3.0
+#define P3D_AIR_LIFT  30.0       /* how high air objects hover above the ground, at scale 1 */
+
+static void P3D_DrawProjected(const char *pic, int x, int y, double lift);
 
 static char p3d_spr[320 * 200];
 
-void
-P3D_DrawGround(
+static void
+P3D_DrawProjected(
     const char *pic,
     int x,
-    int y
+    int y,
+    double lift            /* height above the ground, in flat screen pixels */
 )
 {
     const GFX_PIC *h = (const GFX_PIC*)pic;
@@ -217,7 +221,7 @@ P3D_DrawGround(
     dw = w * s;
     dh = hgt * s;
     left = 16 + cx + (fx - 16 - cx) * s - dw / 2;
-    top = sy - dh;
+    top = sy - dh - lift * s;
 
     for (dy = 0; dy < (int)dh; dy++)
     {
@@ -246,4 +250,26 @@ P3D_DrawGround(
                 displaybuffer[py * 320 + px] = (char)v;
         }
     }
+}
+
+void
+P3D_DrawGround(
+    const char *pic,
+    int x,
+    int y
+)
+{
+    P3D_DrawProjected(pic, x, y, 0.0);
+}
+
+/* flying object: projected like a ground object, lifted above it, so it
+   grows as it comes closer instead of sliding down the flat screen */
+void
+P3D_DrawAir(
+    const char *pic,
+    int x,
+    int y
+)
+{
+    P3D_DrawProjected(pic, x, y, P3D_AIR_LIFT);
 }

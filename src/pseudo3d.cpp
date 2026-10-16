@@ -24,8 +24,40 @@
 #define P3D_WIN_BACK  40         /* window starts this many rows before the ship */
 #define P3D_LINES     (P3D_WIN_ROWS * 32)
 
+/* fog = repeated use of the game's DARK shade table: level 0 = none, 3 = darkest */
+#define P3D_FOG_LEVELS 4
+
+extern char *dtable;
+
 static int p3d_enabled;
 static char p3d_world[P3D_LINES * P3D_W];
+static unsigned char p3d_fog[P3D_FOG_LEVELS][256];
+static int p3d_fog_ready;
+
+/* 4x4 Bayer matrix, values 0..15 */
+static const int P3D_BAYER[4][4] = {
+    {  0,  8,  2, 10 },
+    { 12,  4, 14,  6 },
+    {  3, 11,  1,  9 },
+    { 15,  7, 13,  5 }
+};
+
+static void
+P3D_MakeFog(
+    void
+)
+{
+    int k, i;
+
+    for (i = 0; i < 256; i++)
+        p3d_fog[0][i] = (unsigned char)i;
+
+    for (k = 1; k < P3D_FOG_LEVELS; k++)
+        for (i = 0; i < 256; i++)
+            p3d_fog[k][i] = (unsigned char)dtable[p3d_fog[k - 1][i]];
+
+    p3d_fog_ready = 1;
+}
 
 void
 P3D_Init(
@@ -54,6 +86,9 @@ P3D_Floor(
     double dref = P3D_SHIP_Y - P3D_HORIZON;
     double mref, cx = (P3D_W - 1) / 2.0;
 
+    if (!p3d_fog_ready)
+        P3D_MakeFog();
+
     TILE_GetScroll(&cur_base, &yoff);
 
     wrow0 = cur_base - P3D_WIN_BACK;
@@ -78,19 +113,39 @@ P3D_Floor(
             double hs = dref / (sy - P3D_HORIZON);
             int line = (int)floor(msrc) - wrow0 * 32;
 
+            /* depth fog: 0 at the ship row and below, full at the horizon */
+            double far = (double)(P3D_SHIP_Y - sy) / (P3D_SHIP_Y - P3D_HORIZON);
+            double depth_f = far <= 0 ? 0 : (far > 1 ? 1 : far);
+
             for (sx = 0; sx < P3D_W; sx++)
             {
                 int col = (int)floor(cx + (sx - cx) * hs + 0.5);
+                /* side fog: fades in over the outer half of the width */
+                double edge = fabs(sx - cx) / cx;
+                double side_f = edge > 0.5 ? (edge - 0.5) * 2.0 : 0.0;
+                double level = depth_f * (P3D_FOG_LEVELS - 1) + side_f * 1.5;
+                int base, lvl, v;
+
+                /* ordered dither (4x4 Bayer) between two levels: a soft fade, no bands */
+                base = (int)floor(level);
+                if (level - base > P3D_BAYER[sy & 3][sx & 3] / 16.0)
+                    base++;
+                lvl = base;
 
                 /* wrap across the 288 px map width: far rows need more than the level has */
                 col %= P3D_W;
                 if (col < 0)
                     col += P3D_W;
 
+                if (lvl >= P3D_FOG_LEVELS)
+                    lvl = P3D_FOG_LEVELS - 1;
+
                 if (line < 0 || line >= P3D_LINES)
-                    dst[sx] = P3D_SKY;
+                    v = P3D_SKY;
                 else
-                    dst[sx] = p3d_world[line * P3D_W + col];
+                    v = p3d_world[line * P3D_W + col];
+
+                dst[sx] = (char)p3d_fog[lvl][(unsigned char)v];
             }
         }
     }

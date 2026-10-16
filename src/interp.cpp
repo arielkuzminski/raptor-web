@@ -278,15 +278,10 @@ Replay(
     switch (rec.op)
     {
     case IOP_SPRITE:
-        /* flat: HUD overlay, pop-ups ( money ) and pickups; the player's ship is
-           projected like a flying object, lifted above the floor */
-        if (!P3D_Enabled() || rec.overlay || rec.kind == IK_BONUS
-            || (rec.kind == IK_ANIM && !rec.ground))
-            GFX_PutSprite(rec.pic, x, y);
-        else if (rec.ground)
+        if (rec.ground && P3D_Enabled())
             P3D_DrawGround(rec.pic, x, y);
         else
-            P3D_DrawAir(rec.pic, x, y);
+            GFX_PutSprite(rec.pic, x, y);    /* air things: into the air layer, see INTERP_Render */
         break;
     case IOP_SHADESHAPE:
         GFX_ShadeShape(rec.v[2], rec.pic, x, y);
@@ -341,6 +336,7 @@ INTERP_Render(
     char *screen = displaybuffer;
     double shift;
     int pass, i;
+    char *airbuf = NULL;         /* pseudo-3D: flying things go here, then get warped */
 
     if (now.empty())
         return;
@@ -374,13 +370,20 @@ INTERP_Render(
 
     // pseudo-3D: the ground is cast from the map first; the sprites are then drawn over it
     if (P3D_Enabled())
+    {
         P3D_Floor(screen, shift);
+        airbuf = P3D_AirBegin();
+    }
 
     for (pass = 0; pass < 3; pass++)
     {
         // pass 0: playfield, pass 1 + 2: HUD over 0 and over 255 ( drawn pixels = mask )
         if (pass == 1)
         {
+            /* flying things are warped over the floor, before the HUD goes on top */
+            if (airbuf)
+                P3D_AirComposite(screen);
+
             memset(overlay8, 0, sizeof(overlay8));
             displaybuffer = overlay8;
         }
@@ -426,7 +429,15 @@ INTERP_Render(
                 }
             }
 
-            Replay(rec, x, y, x2, y2);
+            /* flying things ( not on the ground, not pop-ups or pickups ) go to the air layer */
+            if (airbuf && pass == 0 && !rec.ground && rec.kind != IK_BONUS && rec.kind != IK_ANIM)
+            {
+                displaybuffer = airbuf;
+                Replay(rec, x, y, x2, y2);
+                displaybuffer = screen;
+            }
+            else
+                Replay(rec, x, y, x2, y2);
         }
     }
 

@@ -273,3 +273,67 @@ P3D_DrawAir(
 {
     P3D_DrawProjected(pic, x, y, P3D_AIR_LIFT);
 }
+
+/***************************************************************************
+   Air layer: all flying things ( ship, shots, flames, enemies ) are drawn
+   flat into one layer. The layer is then warped with one mapping, so they
+   stay in sync with each other and with the floor.
+ ***************************************************************************/
+static char p3d_air[320 * 200];
+
+char *
+P3D_AirBegin(
+    void
+)
+{
+    memset(p3d_air, 0, sizeof(p3d_air));
+    return p3d_air;
+}
+
+void
+P3D_AirComposite(
+    char *screen
+)
+{
+    const double dref = P3D_SHIP_Y - P3D_HORIZON;
+    const double cx = (P3D_W - 1) / 2.0;
+    int t, sx, it;
+
+    for (t = 0; t < P3D_H; t++)
+    {
+        for (sx = P3D_X0; sx < P3D_X0 + P3D_W; sx++)
+        {
+            /* invert: target row t = ground row g - lift * s, where
+               g = horizon + dref^2 / depth, depth = dref - ( y - ship row ) */
+            double s = 1.0, g, y, xr;
+            int ok = 1, sxs, sys;
+            unsigned char v;
+
+            for (it = 0; it < 4; it++)
+            {
+                g = t + P3D_AIR_LIFT * s;
+                if (g <= P3D_HORIZON + 0.5)
+                {
+                    ok = 0;
+                    break;
+                }
+                s = (g - P3D_HORIZON) / dref;
+            }
+            if (!ok || s < 0.05 || s > P3D_SCALE_MAX)
+                continue;
+
+            g = t + P3D_AIR_LIFT * s;
+            y = P3D_SHIP_Y + dref - dref * dref / (g - P3D_HORIZON);
+
+            xr = (sx - P3D_X0) - cx;
+            sxs = (int)floor(P3D_X0 + cx + xr / s + 0.5);
+            sys = (int)floor(y + 0.5);
+            if (sxs < P3D_X0 || sxs >= P3D_X0 + P3D_W || sys < 0 || sys >= P3D_H)
+                continue;
+
+            v = (unsigned char)p3d_air[sys * 320 + sxs];
+            if (v)
+                screen[t * 320 + sx] = (char)v;
+        }
+    }
+}

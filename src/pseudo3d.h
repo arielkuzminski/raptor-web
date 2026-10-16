@@ -17,7 +17,8 @@ void P3D_Floor(char *screen, double shift);
 
 /* sprite standing on the ground, drawn into displaybuffer at flat x, y */
 void P3D_DrawGround(const char *pic, int x, int y);
-/* flying object above the floor */
-void P3D_DrawAir(const char *pic, int x, int y);
+/* flying things: draw flat into the air layer, then composite it over the floor */
+char *P3D_AirBegin(void);
+void P3D_AirComposite(char *screen);
 
 #endif /* PSEUDO3D_H */

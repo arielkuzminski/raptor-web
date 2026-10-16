@@ -117,6 +117,7 @@
         <option value="120">120 FPS</option>
         <option value="144">144 FPS</option>
         <option value="0">Match monitor</option>
+        <option value="classic">Classic (23 FPS, original)</option>
       </select>
       <button id="start" disabled>Start game</button>
     </div>
@@ -364,7 +365,10 @@
       if (!document.fullscreenElement) $("stage").requestFullscreen().catch(() => {});
       screen.orientation?.lock?.("landscape").catch(() => {});
     }
-    Module.callMain(["-lang", $("lang").value, "-fps", $("fps").value]);
+    // "classic" = original game loop: -interp 0 (passed every time, so it is not kept in SETUP.INI)
+    const classic = $("fps").value === "classic";
+    Module.callMain(["-lang", $("lang").value, "-interp", classic ? "0" : "1",
+      "-fps", classic ? "60" : $("fps").value]);
     // first resize once SDL has created the window
     setTimeout(webResize, 800);
   });

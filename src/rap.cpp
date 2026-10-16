@@ -1469,6 +1469,10 @@ main(
         // frame limit for smooth frames, 0 = screen refresh rate
         if (!strcmp(argv[loop], "-fps"))
             INI_PutPreferenceLong("Video", "max_fps", atoi(argv[loop + 1]));
+
+        // 0 = original 23 fps ( no smooth frames ), 1 = smooth frames
+        if (!strcmp(argv[loop], "-interp"))
+            INI_PutPreferenceLong("Video", "interp", atoi(argv[loop + 1]));
     }
     {
         char langbuf[16];

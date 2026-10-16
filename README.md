@@ -25,7 +25,7 @@ Older versions before 1.2 are not compatible.
 
 - Runs in a modern browser, no installation.
 - Smooth motion: the game logic keeps its original timing, and rendering is interpolated between steps.
-  Choose 60, 120, 144 FPS or match your monitor.
+  Choose 60, 120, 144 FPS or match your monitor. "Classic" runs the original 23 FPS loop without smooth frames.
 - 16:9 presentation with a blurred copy of the game on the sides.
 - Fullscreen from the button or with Alt+Enter.
 - Text in English (default) and Polish. Other languages can be added as `lang/<code>.lng` files.

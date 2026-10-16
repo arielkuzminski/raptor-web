@@ -40,6 +40,10 @@ Older versions before 1.2 are not compatible.
 | Alt | Special weapon |
 | Space | Change weapon |
 | Alt+Enter | Fullscreen |
+| Escape / P / Enter | Menu / pause / confirm (touch pad buttons) |
+
+On touch screens an on-screen pad appears: a joystick on the left, FIRE, SPECIAL, MEGA and CHANGE on the right.
+The page also opens with `?touch=1` to show the pad on any device. A gamepad is detected by the browser and works in the game's own mapping.
 
 ## Build the web version
 

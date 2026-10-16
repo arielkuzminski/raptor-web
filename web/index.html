@@ -65,6 +65,24 @@
   #status.err { color: var(--err); }
   footer { color: var(--muted); font-size: 12px; padding: 0 16px 12px; text-align: center; }
   kbd { border: 1px solid var(--line); border-radius: 3px; padding: 0 5px; font-size: 12px; }
+  /* --- Touch controls: shown only on touch screens (body.touch-on) ----------- */
+  #touch { position: absolute; inset: 0; z-index: 3; display: none; pointer-events: none;
+    user-select: none; -webkit-user-select: none; touch-action: none; -webkit-touch-callout: none; }
+  body.touch-on #touch { display: block; }
+  #touch > * { pointer-events: auto; touch-action: none; }
+  #joy { position: absolute; left: 3vmin; bottom: 3vmin; width: clamp(120px, 34vmin, 220px); aspect-ratio: 1;
+    border-radius: 50%; background: rgba(255, 255, 255, .06); border: 2px solid rgba(242, 165, 65, .35); }
+  #knob { position: absolute; left: 50%; top: 50%; width: 40%; height: 40%; margin: -20% 0 0 -20%;
+    border-radius: 50%; background: rgba(242, 165, 65, .45); pointer-events: none; }
+  #btns { position: absolute; right: 3vmin; bottom: 3vmin; display: grid; grid-template-columns: repeat(2, auto);
+    gap: 1.5vmin; }
+  #sys { position: absolute; right: 2vmin; top: 2vmin; display: flex; gap: 1vmin; }
+  .tbtn { width: clamp(52px, 13vmin, 84px); aspect-ratio: 1; border-radius: 50%; display: flex;
+    align-items: center; justify-content: center; font-size: clamp(10px, 2.2vmin, 13px); font-weight: 700;
+    color: var(--text); background: rgba(255, 255, 255, .08); border: 2px solid rgba(216, 222, 233, .3); }
+  .tbtn.fire { border-color: var(--accent); color: var(--accent); }
+  .tbtn.sm { width: clamp(44px, 9vmin, 64px); aspect-ratio: auto; height: clamp(30px, 6vmin, 44px); border-radius: 6px; }
+  .tbtn.down, #joy.down { background: rgba(242, 165, 65, .35); }
 </style>
 </head>
 <body>
@@ -101,6 +119,20 @@
         <option value="0">Match monitor</option>
       </select>
       <button id="start" disabled>Start game</button>
+    </div>
+    <div id="touch" aria-hidden="true">
+      <div id="joy"><div id="knob"></div></div>
+      <div id="btns">
+        <div class="tbtn" data-key="AltLeft">SPECIAL</div>
+        <div class="tbtn fire" data-key="ControlLeft">FIRE</div>
+        <div class="tbtn" data-key="ShiftRight">MEGA</div>
+        <div class="tbtn" data-key="Space">CHANGE</div>
+      </div>
+      <div id="sys">
+        <div class="tbtn sm" data-key="Escape">ESC</div>
+        <div class="tbtn sm" data-key="KeyP">PAUSE</div>
+        <div class="tbtn sm" data-key="Enter">ENTER</div>
+      </div>
     </div>
   </div>
   <div id="controls">
@@ -217,12 +249,121 @@
     }
   }, true);
 
+  // --- Touch controls -------------------------------------------------------
+  // The pad sends the same keys the game reads on the keyboard (SETUP.INI [Keyboard]),
+  // as synthetic key events, so menus and gameplay work without any C changes.
+  const KEYS = {                       // code -> [key, keyCode]
+    ArrowUp: ["ArrowUp", 38], ArrowDown: ["ArrowDown", 40],
+    ArrowLeft: ["ArrowLeft", 37], ArrowRight: ["ArrowRight", 39],
+    ControlLeft: ["Control", 17], AltLeft: ["Alt", 18], Space: [" ", 32], ShiftRight: ["Shift", 16],
+    KeyP: ["p", 80], Escape: ["Escape", 27], Enter: ["Enter", 13],
+  };
+  const held = new Map();              // code -> how many touch inputs hold it
+  function sendKey(type, code) {
+    const [key, keyCode] = KEYS[code];
+    const ev = new KeyboardEvent(type, { code, key, bubbles: true, cancelable: true });
+    for (const p of ["keyCode", "which"]) Object.defineProperty(ev, p, { get: () => keyCode });
+    document.dispatchEvent(ev);
+  }
+  function pressKey(code, down) {
+    const n = held.get(code) || 0;
+    if (down) {
+      held.set(code, n + 1);
+      if (n === 0) sendKey("keydown", code);
+    } else if (n > 0) {
+      if (n === 1) { held.delete(code); sendKey("keyup", code); }
+      else held.set(code, n - 1);
+    }
+  }
+  function releaseAll() {
+    for (const code of [...held.keys()]) { held.delete(code); sendKey("keyup", code); }
+    document.querySelectorAll(".tbtn.down, #joy.down").forEach((el) => el.classList.remove("down"));
+    joyDirs.clear();
+  }
+
+  // capture keeps the finger's events on the pad even when it slides off; failing is harmless
+  const capture = (el, id) => { try { el.setPointerCapture(id); } catch { /* unknown pointer */ } };
+  const joy = $("joy"), knob = $("knob");
+  const joyDirs = new Set();           // arrow codes currently held by the stick
+  let joyId = null;
+  function joyMove(e) {
+    const r = joy.getBoundingClientRect();
+    const ox = e.clientX - (r.left + r.width / 2), oy = e.clientY - (r.top + r.height / 2);
+    const max = r.width / 2, travel = max * 0.6, dead = max * 0.3;
+    const d = Math.hypot(ox, oy) || 1, k = Math.min(1, travel / d);
+    knob.style.transform = `translate(${ox * k}px, ${oy * k}px)`;
+    const want = new Set();
+    if (ox < -dead) want.add("ArrowLeft");
+    if (ox > dead) want.add("ArrowRight");
+    if (oy < -dead) want.add("ArrowUp");
+    if (oy > dead) want.add("ArrowDown");
+    for (const c of ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"]) {
+      if (want.has(c) && !joyDirs.has(c)) { joyDirs.add(c); pressKey(c, true); }
+      if (!want.has(c) && joyDirs.has(c)) { joyDirs.delete(c); pressKey(c, false); }
+    }
+    joy.classList.toggle("down", want.size > 0);
+  }
+  function joyEnd() {
+    joyId = null;
+    knob.style.transform = "";
+    for (const c of [...joyDirs]) { joyDirs.delete(c); pressKey(c, false); }
+    joy.classList.remove("down");
+  }
+  joy.addEventListener("pointerdown", (e) => {
+    if (joyId !== null) return;
+    joyId = e.pointerId; capture(joy, e.pointerId); joyMove(e); e.preventDefault();
+  });
+  joy.addEventListener("pointermove", (e) => { if (e.pointerId === joyId) joyMove(e); });
+  for (const t of ["pointerup", "pointercancel", "lostpointercapture"])
+    joy.addEventListener(t, (e) => { if (e.pointerId === joyId) joyEnd(); });
+
+  // Buttons: each pointer holds its key until it lifts; several fingers can hold several keys.
+  const padPointers = new Map();       // pointerId -> element
+  document.querySelectorAll("#touch [data-key]").forEach((el) => {
+    const code = el.dataset.key;
+    el.addEventListener("pointerdown", (e) => {
+      e.preventDefault();
+      capture(el, e.pointerId);
+      padPointers.set(e.pointerId, el);
+      el.classList.add("down");
+      pressKey(code, true);
+    });
+    const up = (e) => {
+      if (padPointers.get(e.pointerId) !== el) return;
+      padPointers.delete(e.pointerId);
+      el.classList.remove("down");
+      pressKey(code, false);
+    };
+    for (const t of ["pointerup", "pointercancel", "lostpointercapture"]) el.addEventListener(t, up);
+  });
+  // Keep touches on the pad away from the page and the SDL canvas (no emulated mouse clicks).
+  for (const t of ["touchstart", "touchmove", "touchend", "mousedown", "mouseup", "click"])
+    $("touch").addEventListener(t, (e) => { e.stopPropagation(); e.preventDefault(); }, { passive: false });
+
+  // Never leave a key stuck down when focus or the page changes.
+  window.addEventListener("blur", releaseAll);
+  document.addEventListener("visibilitychange", () => { if (document.hidden) releaseAll(); });
+  window.addEventListener("pagehide", releaseAll);
+
+  // Gamepads: the browser reports them to SDL; just tell the player one is connected.
+  window.addEventListener("gamepadconnected", (e) => {
+    if (running) status(`Gamepad connected: ${e.gamepad.id.split("(")[0].trim()}`);
+  });
+
+  const isTouch = matchMedia("(pointer: coarse)").matches || location.search.includes("touch=1");
+
   $("start").addEventListener("click", async () => {
     $("overlay").classList.add("hidden");
     gameCanvas.focus();
     status("Game running. Saves and settings are kept in this browser.");
     setInterval(persist, 5000);       // zapisy gry i SETUP.INI -> IndexedDB
     running = true;
+    if (isTouch) {
+      document.body.classList.add("touch-on");
+      // phones: go fullscreen and lock landscape (both need this user click)
+      if (!document.fullscreenElement) $("stage").requestFullscreen().catch(() => {});
+      screen.orientation?.lock?.("landscape").catch(() => {});
+    }
     Module.callMain(["-lang", $("lang").value, "-fps", $("fps").value]);
     // first resize once SDL has created the window
     setTimeout(webResize, 800);

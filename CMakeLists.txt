@@ -103,6 +103,7 @@ set(SOURCE_FILES
     src/enemy.cpp                            src/enemy.h
     src/lang.cpp                             src/lang.h
     src/interp.cpp                           src/interp.h
+    src/pseudo3d.cpp                         src/pseudo3d.h
     src/mpuwinmm.cpp
     src/mputsf.cpp
     src/mpualsa.cpp

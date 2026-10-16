@@ -35,6 +35,7 @@
 #include "entypes.h"
 #include "lang.h"
 #include "interp.h"
+#include "pseudo3d.h"
 
 #define TICK_MS (3 * 1000.0 / 70)    // one game tick = 3 frames of the 70 Hz timer
 
@@ -1479,6 +1480,10 @@ main(
         // 0 = original 23 fps ( no smooth frames ), 1 = smooth frames
         if (!strcmp(argv[loop], "-interp"))
             INI_PutPreferenceLong("Video", "interp", atoi(argv[loop + 1]));
+
+        // pseudo-3D ground plane ( alpha ), 0 = off, 1 = on; needs smooth frames
+        if (!strcmp(argv[loop], "-pseudo3d"))
+            INI_PutPreferenceLong("Video", "pseudo3d", atoi(argv[loop + 1]));
     }
     {
         char langbuf[16];
@@ -1492,6 +1497,7 @@ main(
     
     VIDEO_LoadPrefs();
     IPT_LoadPrefs();
+    P3D_Init(INI_GetPreferenceLong("Video", "pseudo3d", 0));
     INTERP_Init(INI_GetPreferenceLong("Video", "interp", 1),
                 INI_GetPreferenceLong("Video", "max_fps", 60));
     

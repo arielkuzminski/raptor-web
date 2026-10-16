@@ -31,6 +31,7 @@
 #include "rap.h"
 #include "tile.h"
 #include "interp.h"
+#include "pseudo3d.h"
 
 void TILE_Put(char *inpic, int x, int y);
 void SHADOW_Draw(char *pic, int x, int y);
@@ -352,6 +353,10 @@ INTERP_Render(
         // pass 0: playfield, pass 1 + 2: HUD over 0 and over 255 ( drawn pixels = mask )
         if (pass == 1)
         {
+            // playfield is complete here ( displaybuffer == screen ): tilt it, HUD stays flat
+            if (P3D_Enabled())
+                P3D_Warp(screen);
+
             memset(overlay8, 0, sizeof(overlay8));
             displaybuffer = overlay8;
         }

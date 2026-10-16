@@ -1073,10 +1073,15 @@ Do_Game(
         INTERP_BeginTick();
         
         TILE_Display();
+        /* ground-attached objects are flagged for the pseudo-3D floor ( interp.cpp ) */
+        INTERP_Ground(1);
         SHADOW_DisplayGround();
         ENEMY_DisplayGround();
+        INTERP_Ground(0);
         SHADOW_DisplaySky();
+        INTERP_Ground(1);
         ANIMS_DisplayGround();
+        INTERP_Ground(0);
         
         ENEMY_DisplaySky();
         SHOTS_Display();

@@ -15,4 +15,7 @@ int P3D_Enabled(void);
    shift = sub-pixel scroll of this frame ( 0..1 ), as in interp.cpp */
 void P3D_Floor(char *screen, double shift);
 
+/* sprite standing on the ground, drawn into displaybuffer at flat x, y */
+void P3D_DrawGround(const char *pic, int x, int y);
+
 #endif /* PSEUDO3D_H */

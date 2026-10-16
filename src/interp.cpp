@@ -43,6 +43,7 @@ typedef struct
     uint8_t op;
     uint8_t kind;
     uint8_t overlay;
+    uint8_t ground;              // ground-attached object ( projected onto the pseudo-3D floor )
     intptr_t id;
     int sub;
     char *pic;
@@ -60,6 +61,7 @@ static int cur;                  // ops[cur] = this tick, ops[cur ^ 1] = previou
 static std::unordered_map<uint64_t, int> counters;
 static int key_kind;
 static intptr_t key_id;
+static int interp_ground;
 static int overlay;
 static int scroll;               // ground moved by this many pixels since the previous tick
 static char overlay8[64000];
@@ -128,6 +130,7 @@ INTERP_BeginTick(
     key_kind = IK_NONE;
     key_id = 0;
     overlay = 0;
+    interp_ground = 0;
     interp_recording = 1;
 }
 
@@ -142,6 +145,18 @@ INTERP_Key(
 {
     key_kind = kind;
     key_id = id;
+}
+
+/***************************************************************************
+   INTERP_Ground() - Following sprites are attached to the ground ( pseudo-3D
+                     projects them onto the floor ) when on = 1
+ ***************************************************************************/
+void
+INTERP_Ground(
+    int on
+)
+{
+    interp_ground = on;
 }
 
 /***************************************************************************
@@ -177,6 +192,7 @@ INTERP_Op(
     rec.op = op;
     rec.kind = key_kind;
     rec.overlay = overlay;
+    rec.ground = (uint8_t)interp_ground;
     rec.id = key_id;
     rec.sub = counters[base]++;
     rec.pic = pic;
@@ -262,7 +278,10 @@ Replay(
     switch (rec.op)
     {
     case IOP_SPRITE:
-        GFX_PutSprite(rec.pic, x, y);
+        if (rec.ground && P3D_Enabled())
+            P3D_DrawGround(rec.pic, x, y);
+        else
+            GFX_PutSprite(rec.pic, x, y);
         break;
     case IOP_SHADESHAPE:
         GFX_ShadeShape(rec.v[2], rec.pic, x, y);

@@ -24,6 +24,7 @@ void INTERP_Reset(void);
 void INTERP_BeginTick(void);
 void INTERP_Key(int kind, intptr_t id);
 void INTERP_Overlay(int on);
+void INTERP_Ground(int on);
 void INTERP_Op(int op, char *pic, int a, int b, int c, int d, int e);
 void INTERP_EndTick(void);
 void INTERP_Render(double alpha, int shake);

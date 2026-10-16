@@ -10,6 +10,9 @@
  ***************************************************************************/
 #include <string.h>
 #include <math.h>
+#include "SDL.h"
+#include "entypes.h"
+#include "gfxapi.h"
 #include "pseudo3d.h"
 #include "tile.h"
 
@@ -150,6 +153,97 @@ P3D_Floor(
 
                 dst[sx] = (char)p3d_fog[lvl][(unsigned char)v];
             }
+        }
+    }
+}
+
+/***************************************************************************
+   P3D_DrawGround() - A sprite standing on the ground: its bottom edge is
+   projected onto the floor ( same mapping as P3D_Floor, inverted ) and the
+   sprite is scaled by the same factor, so it grows as it comes closer.
+   Drawn into displaybuffer ( the playfield ) during the flat pass.
+ ***************************************************************************/
+#define P3D_SPR_OX  32           /* scratch position: clear of the screen edges */
+#define P3D_SPR_OY  8
+#define P3D_SCALE_MAX 3.0
+
+static char p3d_spr[320 * 200];
+
+void
+P3D_DrawGround(
+    const char *pic,
+    int x,
+    int y
+)
+{
+    const GFX_PIC *h = (const GFX_PIC*)pic;
+    int w = LE_LONG(h->width);
+    int hgt = LE_LONG(h->height);
+    double dref = P3D_SHIP_Y - P3D_HORIZON;
+    double cx = (P3D_W - 1) / 2.0;
+    double yb = y + hgt;                  /* bottom edge, flat screen */
+    double fx = x + w / 2.0;              /* centre, flat screen */
+    double depth, sy, s, dw, dh, left, top;
+    int r, c, dy, dx, sr, sc, px, py;
+    char *saved;
+
+    if (w <= 0 || hgt <= 0 || w > 320 - P3D_SPR_OX || hgt > 200 - P3D_SPR_OY)
+    {
+        GFX_PutSprite((char*)pic, x, y);
+        return;
+    }
+
+    /* depth of the bottom edge: the ship row is depth dref */
+    depth = dref - (yb - P3D_SHIP_Y);
+    if (depth < 1)
+        depth = 1;
+
+    sy = P3D_HORIZON + dref * dref / depth;
+    s = (sy - P3D_HORIZON) / dref;
+    if (s > P3D_SCALE_MAX)
+        s = P3D_SCALE_MAX;
+
+    /* draw the sprite flat into the scratch buffer ( transparent = 0 ) */
+    for (r = 0; r < hgt; r++)
+        memset(p3d_spr + (P3D_SPR_OY + r) * 320 + P3D_SPR_OX, 0, w);
+
+    saved = displaybuffer;
+    displaybuffer = p3d_spr;
+    GFX_PutSprite((char*)pic, P3D_SPR_OX, P3D_SPR_OY);
+    displaybuffer = saved;
+
+    /* copy it onto the floor: horizontal centre scaled from the ship column,
+       bottom edge on the projected row */
+    dw = w * s;
+    dh = hgt * s;
+    left = 16 + cx + (fx - 16 - cx) * s - dw / 2;
+    top = sy - dh;
+
+    for (dy = 0; dy < (int)dh; dy++)
+    {
+        py = (int)floor(top + dy + 0.5);
+        if (py < 0 || py >= P3D_H)
+            continue;
+
+        sr = (int)((dy + 0.5) / s);
+        if (sr >= hgt)
+            continue;
+
+        for (dx = 0; dx < (int)dw; dx++)
+        {
+            unsigned char v;
+
+            px = (int)floor(left + dx + 0.5);
+            if (px < P3D_X0 || px >= P3D_X0 + P3D_W)
+                continue;
+
+            sc = (int)((dx + 0.5) / s);
+            if (sc >= w)
+                continue;
+
+            v = (unsigned char)p3d_spr[(P3D_SPR_OY + sr) * 320 + P3D_SPR_OX + sc];
+            if (v)
+                displaybuffer[py * 320 + px] = (char)v;
         }
     }
 }

@@ -143,6 +143,19 @@
   #status.err::after { animation: none; }
   @keyframes blink { to { visibility: hidden; } }
 
+  /* --- About: what the data files are, and where to buy the game --- */
+  .about { width: 100%; max-width: 1400px; padding: 8px 16px 0; display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+  .card h3 { margin: 0 0 10px; font: 400 13px/1.2 var(--pixel); letter-spacing: .12em;
+    color: var(--cyan); text-transform: uppercase; }
+  .card p { margin: 0 0 10px; color: var(--muted); font-size: 14px; }
+  .card ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: 14px; }
+  .card li + li { margin-top: 6px; }
+  .card code { font: 12px var(--mono); color: var(--text); }
+  .card a { color: var(--amber); }
+  .card a:hover { text-decoration: underline; }
+
   footer { display: flex; flex-wrap: wrap; gap: 6px 10px; justify-content: center; align-items: center;
     color: var(--muted); font-size: 13px; padding: 18px 16px 24px; text-align: center; }
   kbd { font: 600 11px/1 var(--mono); color: var(--text); padding: 4px 6px 3px; border-radius: 5px;
@@ -265,6 +278,24 @@
     <span id="status" role="status" aria-live="polite">Loading engine…</span>
   </div>
 </main>
+<section class="about" aria-label="Game data and where to buy">
+  <article class="card">
+    <h3>What are the GLB files?</h3>
+    <p>They hold Raptor's game data: levels, graphics, sounds and music, taken from the original 1994 game. This site doesn't include them, so you need your own copy.</p>
+    <ul>
+      <li><code>FILE0000.GLB</code> + <code>FILE0001.GLB</code>: shareware, the first episode</li>
+      <li><code>FILE0000.GLB</code> to <code>FILE0004.GLB</code>: full game, version 1.2 or later</li>
+    </ul>
+  </article>
+  <article class="card">
+    <h3>Where to buy</h3>
+    <p>Check that your copy includes the GLB files above.</p>
+    <ul>
+      <li><a href="https://store.steampowered.com/app/358360" target="_blank" rel="noopener">Steam: 1994 Classic Edition ↗</a></li>
+      <li><a href="https://www.gog.com/en/games?query=raptor%20call%20of%20the%20shadows" target="_blank" rel="noopener">GOG: search for the 2010 Edition ↗</a></li>
+    </ul>
+  </article>
+</section>
 <footer>
   <span>Controls</span>
   <kbd>←</kbd><kbd>↑</kbd><kbd>→</kbd><kbd>↓</kbd>

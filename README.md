@@ -31,6 +31,17 @@ Older versions before 1.2 are not compatible.
 - Text in English (default) and Polish. Other languages can be added as `lang/<code>.lng` files.
 - Saves and settings are kept in the browser.
 
+## Check out pseudo-3D (experimental)
+
+<p align="center"><img src="docs/pseudo3d.png" alt="Raptor in pseudo-3D: the ground rolls towards you, tanks stand on it, the ship hovers above" width="600"></p>
+
+Raptor with a **pseudo-3D view**: the ground is cast in perspective from the level map, tanks and turrets stand on it and grow as they come closer, and the flying things (ship, shots, flames, enemies) hover above it. The score and the HUD stay flat.
+
+It is an experiment, so expect rough edges. Try it:
+
+- **Windows:** [download the experimental build](https://github.com/arielkuzminski/raptor-web/releases/tag/experimental-pseudo3d-alpha-build) and start `raptor.exe -pseudo3d 1`.
+- **Browser:** coming soon in this version. Development happens in the `pseudo-3d` branch.
+
 ## Controls
 
 | Key | Action |

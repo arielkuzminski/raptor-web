@@ -44,6 +44,10 @@
     image-rendering: pixelated; box-shadow: 0 0 40px rgba(0, 0, 0, .6); }
   #controls { display: flex; gap: 10px; align-items: center; margin-top: 10px; }
   #controls button { padding: 6px 14px; font-size: 13px; }
+  #view { display: flex; gap: 6px; align-items: center; font-size: 13px; }
+  #view a { color: var(--muted); text-decoration: none; padding: 4px 8px; border: 1px solid var(--line); border-radius: 4px; }
+  #view a:hover { color: var(--text); }
+  #view a.on { color: #000; background: var(--accent); border-color: var(--accent); }
   #overlay { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column;
     align-items: center; justify-content: center; gap: 14px; padding: 24px; text-align: center;
     background: radial-gradient(ellipse at center, #141a24 0%, #05070a 75%); }
@@ -138,6 +142,10 @@
   </div>
   <div id="controls">
     <button id="fullscreen" type="button">Fullscreen</button>
+    <nav id="view" aria-label="View">
+      <a href="?pseudo3d=0" data-v="0">Płaski</a>
+      <a href="?pseudo3d=1" data-v="1">Pseudo-3D (eksperyment)</a>
+    </nav>
     <span id="status">Loading engine…</span>
   </div>
 </main>
@@ -150,6 +158,11 @@
   const NAMES = ["FILE0000.GLB", "FILE0001.GLB", "FILE0002.GLB", "FILE0003.GLB", "FILE0004.GLB"];
   const DIR = "/raptor";               // katalog gry w wirtualnym systemie plików (IndexedDB)
   const $ = (id) => document.getElementById(id);
+  // mark the active view ( flat / pseudo-3D ) in the switch
+  (function () {
+    const cur = new URLSearchParams(location.search).get("pseudo3d") === "1" ? "1" : "0";
+    document.querySelectorAll("#view a").forEach((a) => a.classList.toggle("on", a.dataset.v === cur));
+  })();
   const status = (msg, err) => { $("status").textContent = msg; $("status").classList.toggle("err", !!err); };
 
   const LANGS = { en: "English", pl: "Polski", de: "Deutsch", fr: "Français", es: "Español",

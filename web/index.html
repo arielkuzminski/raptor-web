@@ -3,97 +3,204 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Raptor Web</title>
+<title>Raptor Web — Call of the Shadows</title>
+<meta name="description" content="Raptor: Call of the Shadows, running in your browser.">
+<meta name="theme-color" content="#07090f">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Silkscreen:wght@400;700&family=Space+Grotesk:wght@400;500;600;700&display=swap">
 <style>
   :root {
-    --bg: #07090d;
-    --panel: #11151d;
-    --line: #232a36;
-    --text: #d8dee9;
-    --muted: #7d8899;
-    --accent: #f2a541;
-    --ok: #6cc28a;
-    --err: #e06c6c;
+    --bg: #07090f;
+    --panel: rgba(16, 21, 34, .82);
+    --line: #1f2a40;
+    --line-2: #2b3850;
+    --text: #e6ecf5;
+    --muted: #8593aa;
+    --amber: #ffb547;   /* HUD gold: the main accent */
+    --cyan: #5ff0ff;    /* HUD cyan: focus, selection, status */
+    --red: #d6283a;     /* the ship's red trim */
+    --ok: #5ff0a0;
+    --err: #ff6b7a;
+    --pixel: "Silkscreen", "Courier New", monospace;
+    --sans: "Space Grotesk", system-ui, "Segoe UI", sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
   }
   * { box-sizing: border-box; }
-  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text);
-    font: 15px/1.5 system-ui, "Segoe UI", sans-serif; }
-  body { display: flex; flex-direction: column; align-items: center; }
-  header { width: 100%; max-width: 1400px; padding: 14px 16px; display: flex;
-    align-items: baseline; gap: 12px; }
-  header h1 { margin: 0; font-size: 18px; letter-spacing: .08em; text-transform: uppercase; }
-  header h1 span { color: var(--accent); }
-  header small { color: var(--muted); }
-  header nav { margin-left: auto; display: flex; gap: 14px; }
-  header nav a { display: inline-flex; align-items: center; gap: 6px; color: var(--muted);
-    text-decoration: none; font-size: 13px; }
-  header nav a:hover { color: var(--text); }
-  header nav svg { width: 16px; height: 16px; fill: currentColor; }
-  main { flex: 1; width: 100%; max-width: 1400px; padding: 0 16px 16px;
+  html, body { margin: 0; min-height: 100%; background: var(--bg); color: var(--text);
+    font: 15px/1.5 var(--sans); }
+  /* faint retro grid behind everything, lit from the top */
+  body { display: flex; flex-direction: column; align-items: center; min-height: 100vh;
+    background:
+      radial-gradient(1000px 520px at 50% -12%, #1a2644 0%, transparent 70%),
+      repeating-linear-gradient(0deg, rgba(95, 240, 255, .04) 0 1px, transparent 1px 48px),
+      repeating-linear-gradient(90deg, rgba(95, 240, 255, .04) 0 1px, transparent 1px 48px),
+      var(--bg); }
+  :focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+
+  /* --- Header ----------------------------------------------------------------- */
+  header.top { width: 100%; max-width: 1400px; padding: 16px 16px 8px; display: flex;
+    align-items: center; gap: 16px; flex-wrap: wrap; }
+  .brand { display: flex; align-items: center; gap: 12px; color: var(--text); text-decoration: none; }
+  .brand img { width: 40px; height: 40px; image-rendering: pixelated;
+    filter: drop-shadow(0 0 8px rgba(214, 40, 58, .55)); }
+  .brand .word { font: 400 20px/1 var(--pixel); letter-spacing: .06em; }
+  .brand .word em { font-style: normal; color: var(--cyan); margin-left: 6px; }
+  .tag { margin: 0; color: var(--muted); font-size: 13px; }
+  .links { margin-left: auto; display: flex; gap: 8px; flex-wrap: wrap; }
+  .links a { display: inline-flex; align-items: center; gap: 6px; color: var(--muted);
+    text-decoration: none; font-size: 13px; padding: 6px 12px; border: 1px solid var(--line);
+    border-radius: 999px; transition: color .15s, border-color .15s; }
+  .links a:hover { color: var(--text); border-color: var(--line-2); }
+  .links svg { width: 14px; height: 14px; fill: currentColor; }
+
+  /* --- Monitor: an arcade-cabinet bezel around the 16:9 stage ------------------ */
+  main { flex: 1; width: 100%; max-width: 1400px; padding: 0 16px 8px;
     display: flex; flex-direction: column; align-items: center; justify-content: center; }
-  /* 16:9 stage: the 4:3 game in the middle, its blurred copy on the sides */
-  #stage { position: relative; width: 100%; aspect-ratio: 16 / 9; max-height: calc(100vh - 150px);
-    background: #000; border: 1px solid var(--line); border-radius: 6px; overflow: hidden;
+  #bezel { position: relative; width: 100%; padding: 10px; border-radius: 22px;
+    background: linear-gradient(160deg, #1d2536 0%, #0b0f19 55%, #151b2a 100%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .07), inset 0 0 0 1px #05070c,
+      0 40px 90px -30px rgba(0, 0, 0, .9); }
+  #bezel::before { content: ""; position: absolute; top: 12px; right: 18px; width: 8px; height: 8px;
+    border-radius: 50%; background: var(--amber); box-shadow: 0 0 10px var(--amber); }
+  #stage { position: relative; width: 100%; aspect-ratio: 16 / 9; max-height: calc(100dvh - 250px);
+    background: #000; border-radius: 10px; overflow: hidden;
+    box-shadow: inset 0 0 0 1px rgba(95, 240, 255, .14), 0 0 70px -24px rgba(255, 181, 71, .35);
     display: flex; align-items: center; justify-content: center; }
   #stage:fullscreen { width: 100vw; height: 100vh; max-height: none; aspect-ratio: auto;
-    border: 0; border-radius: 0; }
+    border-radius: 0; box-shadow: none; }
+  /* scanlines + vignette, pointer-events off so the game and touch pad still get input */
+  #stage::after { content: ""; position: absolute; inset: 0; z-index: 4; pointer-events: none;
+    background:
+      repeating-linear-gradient(to bottom, rgba(0, 0, 0, .16) 0 1px, transparent 1px 3px),
+      radial-gradient(ellipse at center, transparent 62%, rgba(0, 0, 0, .5) 100%); }
   #ambient { position: absolute; left: -8%; top: -8%; width: 116%; height: 116%;
     filter: blur(32px) brightness(.45) saturate(1.3); }
   #canvas { position: relative; z-index: 1; display: block; outline: none;
     height: 100% !important; width: auto !important; max-width: 100%; aspect-ratio: 4 / 3;
     image-rendering: pixelated; box-shadow: 0 0 40px rgba(0, 0, 0, .6); }
-  #controls { display: flex; gap: 10px; align-items: center; margin-top: 10px; }
-  #controls button { padding: 6px 14px; font-size: 13px; }
-  #view { display: flex; gap: 6px; align-items: center; font-size: 13px; }
-  #view a { color: var(--muted); text-decoration: none; padding: 4px 8px; border: 1px solid var(--line); border-radius: 4px; }
-  #view a:hover { color: var(--text); }
-  #view a.on { color: #000; background: var(--accent); border-color: var(--accent); }
+
+  /* --- Title screen (overlay) ------------------------------------------------- */
   #overlay { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column;
-    align-items: center; justify-content: center; gap: 14px; padding: 24px; text-align: center;
-    background: radial-gradient(ellipse at center, #141a24 0%, #05070a 75%); }
+    align-items: center; justify-content: center; justify-content: safe center; gap: 14px; padding: 24px; text-align: center;
+    overflow: auto; background: radial-gradient(ellipse at 50% 35%, #1b2644 0%, #05070d 72%); }
   #overlay.hidden { display: none; }
-  #overlay h2 { margin: 0; font-size: 28px; letter-spacing: .12em; }
-  #overlay p { margin: 0; max-width: 520px; color: var(--muted); }
-  button, label.btn { appearance: none; border: 1px solid var(--accent); background: transparent;
-    color: var(--accent); padding: 10px 22px; border-radius: 4px; font: inherit;
-    font-weight: 600; letter-spacing: .06em; cursor: pointer; }
-  button:hover, label.btn:hover { background: var(--accent); color: #000; }
-  button:disabled { opacity: .4; cursor: default; background: transparent; color: var(--accent); }
+  .title h2 { margin: 0; font: 400 clamp(38px, 7vw, 84px)/1 var(--pixel); letter-spacing: .05em;
+    color: var(--amber); text-shadow: 0 0 22px rgba(255, 181, 71, .5), 4px 4px 0 var(--red); }
+  .title .sub { margin: 12px 0 0; font: 400 clamp(11px, 1.6vw, 15px)/1 var(--pixel);
+    color: var(--cyan); letter-spacing: .3em; }
+  .intro { margin: 0; max-width: 540px; color: var(--muted); font-size: 14px; }
+  #files { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; font: 12px var(--mono); }
+  #files span { display: inline-flex; align-items: center; gap: 8px; padding: 6px 10px;
+    border: 1px solid var(--line); border-radius: 6px; color: var(--muted); background: rgba(255, 255, 255, .02); }
+  #files span::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--line-2); }
+  #files span.ok { color: var(--text); border-color: rgba(95, 240, 160, .4); }
+  #files span.ok::before { background: var(--ok); box-shadow: 0 0 8px var(--ok); }
+  .settings { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+  .settings label { display: flex; flex-direction: column; gap: 6px; text-align: left;
+    font: 600 11px/1 var(--sans); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
   input[type=file] { display: none; }
-  select { background: var(--panel); color: var(--text); border: 1px solid var(--line);
-    border-radius: 4px; padding: 8px 10px; font: inherit; }
-  #files { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; font-size: 13px; }
-  #files span { padding: 2px 8px; border: 1px solid var(--line); border-radius: 3px; color: var(--muted); }
-  #files span.ok { color: var(--ok); border-color: var(--ok); }
-  #status { min-height: 1.5em; color: var(--muted); font-size: 13px; }
+  select { appearance: none; min-width: 180px; background: #0c1120 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%238593aa'/%3E%3C/svg%3E") no-repeat right 12px center;
+    color: var(--text); border: 1px solid var(--line-2); border-radius: 8px; padding: 10px 34px 10px 12px;
+    font: 500 14px var(--sans); cursor: pointer; }
+  select:hover { border-color: var(--cyan); }
+
+  button, label.btn { appearance: none; display: inline-flex; align-items: center; justify-content: center;
+    font: 600 14px/1 var(--sans); letter-spacing: .03em; padding: 13px 20px; border-radius: 8px;
+    border: 1px solid var(--line-2); background: #131a2a; color: var(--text); cursor: pointer;
+    transition: color .15s, border-color .15s, background .15s, transform .08s, box-shadow .15s; }
+  button:hover, label.btn:hover { border-color: var(--cyan); color: var(--cyan); }
+  button:active, label.btn:active { transform: translateY(2px); }
+  button.primary { background: var(--amber); border-color: var(--amber); color: #140d02; min-width: 220px;
+    font: 700 17px/1 var(--sans); letter-spacing: .05em; padding: 16px 28px;
+    box-shadow: 0 6px 0 #8f5d12, 0 0 36px rgba(255, 181, 71, .35); }
+  button.primary:hover { background: #ffc66e; border-color: #ffc66e; color: #140d02; }
+  button.primary:active { transform: translateY(4px); box-shadow: 0 2px 0 #8f5d12, 0 0 36px rgba(255, 181, 71, .35); }
+  button:disabled, button:disabled:hover { opacity: .4; cursor: default; transform: none; color: var(--text);
+    border-color: var(--line-2); background: #131a2a; }
+  button.primary:disabled, button.primary:disabled:hover { background: var(--amber); border-color: var(--amber);
+    color: #140d02; box-shadow: none; }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+
+  /* --- Controls bar ----------------------------------------------------------- */
+  #controls { display: flex; gap: 12px 16px; align-items: center; justify-content: center; flex-wrap: wrap;
+    margin-top: 14px; padding: 10px 14px; max-width: 100%; background: var(--panel);
+    border: 1px solid var(--line); border-radius: 12px; backdrop-filter: blur(6px); }
+  #controls button { padding: 9px 16px; font-size: 13px; }
+  #view { display: inline-flex; gap: 3px; padding: 3px; border: 1px solid var(--line); border-radius: 8px; }
+  #view a { color: var(--muted); text-decoration: none; padding: 7px 12px; border-radius: 6px;
+    font-size: 13px; transition: color .15s, background .15s; }
+  #view a:hover { color: var(--text); }
+  #view a.on { background: var(--cyan); color: #04121a; font-weight: 600; }
+  #status { min-height: 1.5em; font: 13px/1.5 var(--mono); color: var(--muted); }
+  #status::before { content: "> "; color: var(--cyan); }
+  #status::after { content: "_"; color: var(--cyan); margin-left: 2px; animation: blink 1s steps(2) infinite; }
   #status.err { color: var(--err); }
-  footer { color: var(--muted); font-size: 12px; padding: 0 16px 12px; text-align: center; }
-  kbd { border: 1px solid var(--line); border-radius: 3px; padding: 0 5px; font-size: 12px; }
-  /* --- Touch controls: shown only on touch screens (body.touch-on) ----------- */
+  #status.err::after { animation: none; }
+  @keyframes blink { to { visibility: hidden; } }
+
+  footer { display: flex; flex-wrap: wrap; gap: 6px 10px; justify-content: center; align-items: center;
+    color: var(--muted); font-size: 13px; padding: 18px 16px 24px; text-align: center; }
+  kbd { font: 600 11px/1 var(--mono); color: var(--text); padding: 4px 6px 3px; border-radius: 5px;
+    border: 1px solid var(--line-2); border-bottom-width: 3px; background: #0c1120; }
+
+  /* --- Touch pad: shown only on touch screens (body.touch-on) ----------------- */
   #touch { position: absolute; inset: 0; z-index: 3; display: none; pointer-events: none;
     user-select: none; -webkit-user-select: none; touch-action: none; -webkit-touch-callout: none; }
   body.touch-on #touch { display: block; }
   #touch > * { pointer-events: auto; touch-action: none; }
   #joy { position: absolute; left: 3vmin; bottom: 3vmin; width: clamp(120px, 34vmin, 220px); aspect-ratio: 1;
-    border-radius: 50%; background: rgba(255, 255, 255, .06); border: 2px solid rgba(242, 165, 65, .35); }
+    border-radius: 50%; background: radial-gradient(circle, rgba(95, 240, 255, .1), rgba(95, 240, 255, .02) 70%);
+    border: 2px solid rgba(95, 240, 255, .35); }
   #knob { position: absolute; left: 50%; top: 50%; width: 40%; height: 40%; margin: -20% 0 0 -20%;
-    border-radius: 50%; background: rgba(242, 165, 65, .45); pointer-events: none; }
+    border-radius: 50%; background: rgba(255, 181, 71, .6); box-shadow: 0 0 16px rgba(255, 181, 71, .5);
+    pointer-events: none; }
   #btns { position: absolute; right: 3vmin; bottom: 3vmin; display: grid; grid-template-columns: repeat(2, auto);
     gap: 1.5vmin; }
   #sys { position: absolute; right: 2vmin; top: 2vmin; display: flex; gap: 1vmin; }
   .tbtn { width: clamp(52px, 13vmin, 84px); aspect-ratio: 1; border-radius: 50%; display: flex;
-    align-items: center; justify-content: center; font-size: clamp(10px, 2.2vmin, 13px); font-weight: 700;
-    color: var(--text); background: rgba(255, 255, 255, .08); border: 2px solid rgba(216, 222, 233, .3); }
-  .tbtn.fire { border-color: var(--accent); color: var(--accent); }
-  .tbtn.sm { width: clamp(44px, 9vmin, 64px); aspect-ratio: auto; height: clamp(30px, 6vmin, 44px); border-radius: 6px; }
-  .tbtn.down, #joy.down { background: rgba(242, 165, 65, .35); }
+    align-items: center; justify-content: center; font: 700 clamp(9px, 2vmin, 12px)/1 var(--pixel);
+    color: var(--text); background: rgba(10, 14, 24, .6); border: 2px solid rgba(230, 236, 245, .35);
+    box-shadow: 0 5px 0 rgba(0, 0, 0, .45); }
+  .tbtn.fire { border-color: var(--red); color: #ffd6da; background: rgba(214, 40, 58, .3); }
+  .tbtn.sm { width: clamp(44px, 9vmin, 64px); aspect-ratio: auto; height: clamp(30px, 6vmin, 44px); border-radius: 8px; }
+  .tbtn.down { transform: translateY(3px); box-shadow: none; background: rgba(255, 181, 71, .4); border-color: var(--amber); }
+  .tbtn.fire.down { background: rgba(214, 40, 58, .7); }
+  #joy.down { background: rgba(255, 181, 71, .14); }
+
+  /* --- Small screens and short ones ------------------------------------------- */
+  @media (max-width: 640px) {
+    .tag { display: none; }
+    .links { margin-left: 0; width: 100%; }
+    #controls { flex-direction: column; width: 100%; }
+    #controls button { width: 100%; }
+    #view { width: 100%; }
+    #view a { flex: 1; text-align: center; padding: 8px 6px; font-size: 12px; }
+    footer { width: 100%; }
+  }
+  @media (max-height: 560px) {
+    .intro { display: none; }
+    #overlay { gap: 8px; padding: 12px; }
+    .title h2 { font-size: 30px; }
+    button.primary { padding: 12px 22px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
 </style>
 </head>
 <body>
-<header>
-  <h1>Raptor <span>Web</span></h1>
-  <small>Call of the Shadows · source port skynettx/raptor → WebAssembly</small>
-  <nav>
+<header class="top">
+  <a class="brand" href="./" aria-label="Raptor Web">
+    <img src="logo.png" alt="" width="40" height="40">
+    <span class="word">RAPTOR<em>WEB</em></span>
+  </a>
+  <p class="tag">Call of the Shadows · source port skynettx/raptor → WebAssembly</p>
+  <nav class="links" aria-label="Project links">
     <a href="https://github.com/arielkuzminski/raptor-web" target="_blank" rel="noopener">
       <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
       Fork
@@ -105,52 +212,63 @@
   </nav>
 </header>
 <main>
-  <div id="stage">
-    <canvas id="ambient" width="48" height="27" aria-hidden="true"></canvas>
-    <canvas id="canvas" tabindex="-1" oncontextmenu="event.preventDefault()"></canvas>
-    <div id="overlay">
-      <h2>RAPTOR</h2>
-      <p>The game needs your original data files (version 1.2+).
-         Select them once — they will be remembered in this browser.</p>
-      <div id="files"></div>
-      <label class="btn" for="picker">Choose GLB files…</label>
-      <input id="picker" type="file" multiple accept=".glb,.GLB">
-      <select id="lang" aria-label="Language"></select>
-      <select id="fps" aria-label="Frames per second">
-        <option value="60">60 FPS</option>
-        <option value="120">120 FPS</option>
-        <option value="144">144 FPS</option>
-        <option value="0">Match monitor</option>
-        <option value="classic">Classic (23 FPS, original)</option>
-      </select>
-      <button id="start" disabled>Start game</button>
-    </div>
-    <div id="touch" aria-hidden="true">
-      <div id="joy"><div id="knob"></div></div>
-      <div id="btns">
-        <div class="tbtn" data-key="AltLeft">SPECIAL</div>
-        <div class="tbtn fire" data-key="ControlLeft">FIRE</div>
-        <div class="tbtn" data-key="ShiftRight">MEGA</div>
-        <div class="tbtn" data-key="Space">CHANGE</div>
+  <div id="bezel">
+    <div id="stage">
+      <canvas id="ambient" width="48" height="27" aria-hidden="true"></canvas>
+      <canvas id="canvas" tabindex="-1" oncontextmenu="event.preventDefault()"></canvas>
+      <div id="overlay">
+        <div class="title">
+          <h2>RAPTOR</h2>
+          <p class="sub">CALL OF THE SHADOWS</p>
+        </div>
+        <p class="intro">The game needs your original data files (version 1.2+).
+           Select them once — they will be remembered in this browser.</p>
+        <div id="files"></div>
+        <div class="row">
+          <label class="btn" for="picker">Choose GLB files…</label>
+          <input id="picker" type="file" multiple accept=".glb,.GLB">
+        </div>
+        <div class="settings">
+          <label>Language <select id="lang" aria-label="Language"></select></label>
+          <label>Frame rate <select id="fps" aria-label="Frames per second">
+            <option value="60">60 FPS</option>
+            <option value="120">120 FPS</option>
+            <option value="144">144 FPS</option>
+            <option value="0">Match monitor</option>
+            <option value="classic">Classic (23 FPS, original)</option>
+          </select></label>
+        </div>
+        <button id="start" class="primary" disabled>Start game</button>
       </div>
-      <div id="sys">
-        <div class="tbtn sm" data-key="Escape">ESC</div>
-        <div class="tbtn sm" data-key="KeyP">PAUSE</div>
-        <div class="tbtn sm" data-key="Enter">ENTER</div>
+      <div id="touch" aria-hidden="true">
+        <div id="joy"><div id="knob"></div></div>
+        <div id="btns">
+          <div class="tbtn" data-key="AltLeft">SPECIAL</div>
+          <div class="tbtn fire" data-key="ControlLeft">FIRE</div>
+          <div class="tbtn" data-key="ShiftRight">MEGA</div>
+          <div class="tbtn" data-key="Space">CHANGE</div>
+        </div>
+        <div id="sys">
+          <div class="tbtn sm" data-key="Escape">ESC</div>
+          <div class="tbtn sm" data-key="KeyP">PAUSE</div>
+          <div class="tbtn sm" data-key="Enter">ENTER</div>
+        </div>
       </div>
     </div>
   </div>
   <div id="controls">
     <button id="fullscreen" type="button">Fullscreen</button>
     <nav id="view" aria-label="View">
-      <a href="?pseudo3d=0" data-v="0">Płaski</a>
-      <a href="?pseudo3d=1" data-v="1">Pseudo-3D (eksperyment)</a>
+      <a href="?pseudo3d=0" data-v="0">Classic</a>
+      <a href="?pseudo3d=1" data-v="1">Pseudo-3D (experimental)</a>
     </nav>
-    <span id="status">Loading engine…</span>
+    <span id="status" role="status" aria-live="polite">Loading engine…</span>
   </div>
 </main>
 <footer>
-  Controls: arrows · <kbd>Ctrl</kbd> fire · <kbd>Alt</kbd> special weapon ·
+  <span>Controls</span>
+  <kbd>←</kbd><kbd>↑</kbd><kbd>→</kbd><kbd>↓</kbd>
+  <span>·</span> <kbd>Ctrl</kbd> fire · <kbd>Alt</kbd> special weapon ·
   <kbd>Space</kbd> change weapon · <kbd>Alt</kbd>+<kbd>Enter</kbd> fullscreen
 </footer>
 

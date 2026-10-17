@@ -53,4 +53,5 @@ em++ -O2 "${OBJS[@]}" -o "$OUT/raptor.js" \
     --embed-file "$SRC/lang@/lang"
 
 cp "$SRC/web/index.html" "$OUT/index.html"
+cp "$SRC/web/"{favicon.ico,favicon-16.png,favicon-32.png,apple-touch-icon.png,icon-192.png,logo.png} "$OUT/"
 ls -lh "$OUT"

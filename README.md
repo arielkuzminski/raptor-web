@@ -12,13 +12,16 @@ Raptor: Call of the Shadows, running in your browser. This is a WebAssembly port
 
 ## You need your own game files
 
-This project does not contain and does not host any game data. You need the original GLB files from
-Raptor: Call of the Shadows:
+The project includes the official shareware package of Raptor: Call of the Shadows (copyright 1994
+Cygnus Studios, distributed by Apogee Software, Ltd.) in `web/shareware/`, unmodified, so the game
+starts in shareware mode (episode 1) out of the box. The full game needs your own GLB files, which
+are not part of this repository:
 
-- Shareware: `FILE0000.GLB` and `FILE0001.GLB`
-- Full version 1.2 or higher: `FILE0000.GLB` to `FILE0004.GLB`
+- Shareware (included): `FILE0000.GLB` and `FILE0001.GLB`
+- Full version 1.2 or higher (you provide): `FILE0000.GLB` to `FILE0004.GLB`
 
-Select them on the start screen. They are stored only in your browser (IndexedDB) and are never uploaded anywhere.
+To play the full game, select your files on the start screen. They are stored only in your browser
+(IndexedDB) and are never uploaded anywhere.
 Older versions before 1.2 are not compatible.
 
 ## Features

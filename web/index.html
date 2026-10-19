@@ -234,8 +234,8 @@
           <h2>RAPTOR</h2>
           <p class="sub">CALL OF THE SHADOWS</p>
         </div>
-        <p class="intro">The game needs your original data files (version 1.2+).
-           Select them once — they will be remembered in this browser.</p>
+        <p class="intro">Shareware (episode 1) is included and ready to play.
+           For the full game, select your FILE0000–FILE0004.GLB files (version 1.2+) once — they will be remembered in this browser.</p>
         <div id="files"></div>
         <div class="row">
           <label class="btn" for="picker">Choose GLB files…</label>
@@ -281,11 +281,12 @@
 <section class="about" aria-label="Game data and where to buy">
   <article class="card">
     <h3>What are the GLB files?</h3>
-    <p>They hold Raptor's game data: levels, graphics, sounds and music, taken from the original 1994 game. This site doesn't include them, so you need your own copy.</p>
+    <p>They hold Raptor's game data: levels, graphics, sounds and music, taken from the original 1994 game. The shareware files (episode 1) are included with this site, as an unmodified copy of the Apogee shareware package. The full game needs your own copy.</p>
     <ul>
-      <li><code>FILE0000.GLB</code> + <code>FILE0001.GLB</code>: shareware, the first episode</li>
-      <li><code>FILE0000.GLB</code> to <code>FILE0004.GLB</code>: full game, version 1.2 or later</li>
+      <li><code>FILE0000.GLB</code> + <code>FILE0001.GLB</code>: shareware, the first episode (included here)</li>
+      <li><code>FILE0000.GLB</code> to <code>FILE0004.GLB</code>: full game, version 1.2 or later (you provide these)</li>
     </ul>
+    <p>Raptor: Call of the Shadows, copyright 1994 Cygnus Studios, licensed for distribution by Apogee Software, Ltd.</p>
   </article>
   <article class="card">
     <h3>Where to buy</h3>
@@ -355,14 +356,19 @@
     FS.writeFile(`${DIR}/${name.toUpperCase()}`, new Uint8Array(buffer));
   }
 
-  // Jeśli GLB leżą obok strony w ./data/ (lokalny serwer), pobierz je automatycznie
+  // Shareware (FILE0000/0001) jest w shareware/ obok strony; ./data/ to lokalne dane dev.
+  // Pobieramy tylko to, czego nie ma jeszcze w IndexedDB - pełnej gry nie szukamy.
+  const SHAREWARE = ["FILE0000.GLB", "FILE0001.GLB"];
   async function tryFetchLocal() {
     for (const n of NAMES) {
       if (has(n)) continue;
-      try {
-        const r = await fetch(`data/${n}`);
-        if (r.ok) await writeFile(n, await r.arrayBuffer());
-      } catch { /* brak - użytkownik wybierze ręcznie */ }
+      for (const base of ["shareware/", "data/"]) {
+        if (base === "shareware/" && !SHAREWARE.includes(n)) continue;
+        try {
+          const r = await fetch(`${base}${n}`);
+          if (r.ok) { await writeFile(n, await r.arrayBuffer()); break; }
+        } catch { /* brak - próbuj dalej / użytkownik wybierze ręcznie */ }
+      }
     }
   }
 

@@ -54,4 +54,8 @@ em++ -O2 "${OBJS[@]}" -o "$OUT/raptor.js" \
 
 cp "$SRC/web/index.html" "$OUT/index.html"
 cp "$SRC/web/"{favicon.ico,favicon-16.png,favicon-32.png,apple-touch-icon.png,icon-192.png,logo.png} "$OUT/"
+
+# Pełna, niezmieniona paczka shareware (wymóg VENDOR.DOC pkt 3.A.1) - strona ładuje z niej FILE0000/0001
+mkdir -p "$OUT/shareware"
+cp "$SRC/web/shareware/"* "$OUT/shareware/"
 ls -lh "$OUT"

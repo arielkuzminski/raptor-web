@@ -3,3 +3,6 @@ dist/
 data/
 *.GLB
 *.glb
+# Wyjątek: oficjalna paczka shareware (dystrybucja dozwolona, VENDOR.DOC)
+!shareware/
+!shareware/*

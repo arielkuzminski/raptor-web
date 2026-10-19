@@ -23,7 +23,9 @@ jobs:
       - name: Install Emscripten
         uses: mymindstorm/setup-emsdk@v14
         with:
-          version: latest
+          # Przypięte do wersji, na której testowano build (lokalnie 6.0.12).
+          # "latest" przestało dołączać IDBFS (-lidbfs.js) i strona nie startuje.
+          version: 6.0.12
 
       - name: Build WebAssembly
         run: bash web/build_web.sh
